@@ -8,7 +8,7 @@
 <style>
   :root { --line:#333; }
   * { box-sizing:border-box; margin:0; padding:0; }
-  body { background:#000; color:#fff; font:14px/1.5 "Helvetica Neue",Helvetica,Arial,sans-serif; padding:20px 20px 120px; max-width:560px; margin:0 auto; }
+  body { background:#000; color:#fff; font:14px/1.5 "Helvetica Neue",Helvetica,Arial,sans-serif; padding:20px 20px 0; max-width:560px; margin:0 auto; }
   h1 { font-size:16px; font-weight:700; margin-bottom:16px; }
   h2 { font-size:14px; font-weight:700; margin:28px 0 10px; border-top:1px solid var(--line); padding-top:16px; }
   label { display:block; font-size:12px; opacity:.6; margin:10px 0 4px; }
@@ -22,7 +22,7 @@
   details { border:1px solid var(--line); padding:12px; margin-bottom:8px; }
   summary { cursor:pointer; font-weight:700; }
   .hint { font-size:12px; opacity:.6; margin-top:8px; }
-  .bar { position:fixed; left:0; right:0; bottom:0; background:#000; border-top:1px solid var(--line);
+  .bar { position:sticky; bottom:0; margin:28px -20px 0; background:#000; border-top:1px solid var(--line);
     padding:12px 20px calc(12px + env(safe-area-inset-bottom)); display:flex; gap:12px; align-items:center; }
   .msg { flex:1; font-size:12px; opacity:.85; }
 </style>
