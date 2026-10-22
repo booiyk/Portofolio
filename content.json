@@ -1,0 +1,13 @@
+{
+  "name": "Adrian Fikri Fahrezi",
+  "projects": [
+    { "date": "2026-11-26", "title": "Nama project 1", "url": "" },
+    { "date": "2026-10-12", "title": "Nama project 2", "url": "" }
+  ],
+  "info": "Tulis deskripsi singkat tentang dirimu di sini.",
+  "contacts": [
+    { "label": "emailkamu@gmail.com", "url": "mailto:emailkamu@gmail.com" },
+    { "label": "Instagram", "url": "https://instagram.com/usernamekamu" },
+    { "label": "WhatsApp", "url": "https://wa.me/628123456789" }
+  ]
+}
