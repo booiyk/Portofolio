@@ -39,11 +39,15 @@
     display:none; padding: calc(env(safe-area-inset-top) + 64px) 20px calc(env(safe-area-inset-bottom) + 64px);
     overflow:auto;
   }
-  .panel.open { display:block; }
-  .panel .inner { max-width:520px; margin:0 auto; line-height:1.7; }
-  .panel p + p, .panel li + li { margin-top:12px; }
-  .panel ul { list-style:none; }
+  .panel.open { display:flex; }
+  .panel .inner {
+    margin:auto; width:100%; max-width:520px;
+    text-align:center; font-weight:700; font-size:16px; line-height:1.6;
+  }
+  .row + .row { margin-top:14px; }
+  .row .d { margin-right:.7em; }
   .panel a { border-bottom:1px solid var(--fg); }
+  .info-text { white-space:pre-line; }
 
   @media (prefers-reduced-motion: reduce) { .info { animation:none; } }
 </style>
@@ -57,7 +61,6 @@
 </header>
 
 <main>
-  <!-- Ganti video.mp4 dengan file videomu, taruh di folder yang sama dengan index.html -->
   <video src="video.mp4" autoplay muted loop playsinline preload="auto"></video>
 </main>
 
@@ -65,34 +68,86 @@
   <button data-open="contact" aria-expanded="false">Contact</button>
 </footer>
 
-<section class="panel" id="project" aria-label="Project">
-  <div class="inner">
-    <ul>
-      <li>Nama project 1</li>
-      <li>Nama project 2</li>
-      <li>Nama project 3</li>
-    </ul>
-  </div>
-</section>
-
-<section class="panel" id="info" aria-label="Info">
-  <div class="inner">
-    <p>Adrian Fikri Fahrezi.</p>
-    <p>Tulis deskripsi singkat tentang dirimu di sini.</p>
-  </div>
-</section>
-
-<section class="panel" id="contact" aria-label="Contact">
-  <div class="inner">
-    <ul>
-      <li><a href="mailto:emailkamu@gmail.com">emailkamu@gmail.com</a></li>
-      <li><a href="https://instagram.com/usernamekamu" target="_blank" rel="noopener">Instagram</a></li>
-      <li><a href="https://wa.me/628123456789" target="_blank" rel="noopener">WhatsApp</a></li>
-    </ul>
-  </div>
-</section>
+<section class="panel" id="project" aria-label="Project"><div class="inner"></div></section>
+<section class="panel" id="info" aria-label="Info"><div class="inner info-text"></div></section>
+<section class="panel" id="contact" aria-label="Contact"><div class="inner"></div></section>
 
 <script>
+  /* ---------- Konten ---------- */
+  const DEFAULT = {
+    name: "Adrian Fikri Fahrezi",
+    projects: [
+      { date: "2026-11-26", title: "Nama project 1", url: "" },
+      { date: "2026-10-12", title: "Nama project 2", url: "" }
+    ],
+    info: "Tulis deskripsi singkat tentang dirimu di sini.",
+    contacts: [
+      { label: "emailkamu@gmail.com", url: "mailto:emailkamu@gmail.com" },
+      { label: "Instagram", url: "https://instagram.com/usernamekamu" },
+      { label: "WhatsApp", url: "https://wa.me/628123456789" }
+    ]
+  };
+  const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+
+  function formatDate(iso) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || '');
+    if (!m) return '';
+    return m[3] + (MONTHS[parseInt(m[2], 10) - 1] || '');
+  }
+  function safeUrl(u) {
+    u = (u || '').trim();
+    if (!u) return '';
+    if (/^(https?:|mailto:|tel:)/i.test(u)) return u;
+    if (/^[^\s@]+@[^\s@]+$/.test(u)) return 'mailto:' + u;
+    if (/^[a-z][a-z0-9+.-]*:/i.test(u)) return '';
+    return 'https://' + u;
+  }
+  function makeLink(text, url) {
+    const a = document.createElement('a');
+    a.href = url; a.textContent = text;
+    if (/^https?:/i.test(url)) { a.target = '_blank'; a.rel = 'noopener'; }
+    return a;
+  }
+  function render(c) {
+    const name = c.name || DEFAULT.name;
+    document.querySelector('.name').textContent = name;
+    document.title = name;
+
+    const pl = document.querySelector('#project .inner');
+    pl.textContent = '';
+    [...(c.projects || [])]
+      .sort((a, b) => String(b.date).localeCompare(String(a.date)))
+      .forEach(p => {
+        const row = document.createElement('div');
+        row.className = 'row';
+        const d = formatDate(p.date);
+        if (d) { const s = document.createElement('span'); s.className = 'd'; s.textContent = d; row.appendChild(s); }
+        const url = safeUrl(p.url);
+        if (url) row.appendChild(makeLink(p.title || '', url));
+        else row.appendChild(document.createTextNode(p.title || ''));
+        pl.appendChild(row);
+      });
+
+    document.querySelector('#info .inner').textContent = c.info || '';
+
+    const cl = document.querySelector('#contact .inner');
+    cl.textContent = '';
+    (c.contacts || []).forEach(k => {
+      const row = document.createElement('div');
+      row.className = 'row';
+      const url = safeUrl(k.url);
+      if (url) row.appendChild(makeLink(k.label || '', url));
+      else row.appendChild(document.createTextNode(k.label || ''));
+      cl.appendChild(row);
+    });
+  }
+
+  fetch('content.json', { cache: 'no-store' })
+    .then(r => { if (!r.ok) throw 0; return r.json(); })
+    .catch(() => DEFAULT)
+    .then(render);
+
+  /* ---------- Panel ---------- */
   const panels = document.querySelectorAll('.panel');
   const triggers = document.querySelectorAll('[data-open]');
   function closeAll() {
