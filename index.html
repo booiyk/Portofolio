@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Adrian Fikri Fahrezi</title>
+<meta name="description" content="Portofolio Adrian Fikri Fahrezi">
+<meta name="theme-color" content="#000000">
+<style>
+  :root { --bg:#000; --fg:#fff; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--fg); }
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px; letter-spacing: .02em;
+    display:grid; grid-template-rows:auto 1fr auto; height:100dvh;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+  a, button { color:inherit; font:inherit; letter-spacing:inherit; background:none; border:0; cursor:pointer; text-decoration:none; }
+  a:focus-visible, button:focus-visible { outline:1px solid var(--fg); outline-offset:4px; }
+
+  header {
+    position:relative; z-index:20; background:var(--bg);
+    display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
+    padding:18px 20px;
+  }
+  .name { justify-self:start; }
+  .project { justify-self:center; }
+  .info { justify-self:end; animation: blink 1.2s steps(1,end) infinite; }
+  .info[aria-expanded="true"], .info:hover { animation:none; }
+  @keyframes blink { 0%,60% {opacity:1} 61%,100% {opacity:.15} }
+
+  main { display:flex; align-items:center; justify-content:center; min-height:0; padding:0 20px; }
+  video { max-width:100%; max-height:100%; display:block; background:#000; }
+
+  footer { position:relative; z-index:20; background:var(--bg); padding:18px 20px; text-align:center; }
+
+  .panel {
+    position:fixed; inset:0; z-index:10; background:var(--bg);
+    display:none; padding: calc(env(safe-area-inset-top) + 64px) 20px calc(env(safe-area-inset-bottom) + 64px);
+    overflow:auto;
+  }
+  .panel.open { display:block; }
+  .panel .inner { max-width:520px; margin:0 auto; line-height:1.7; }
+  .panel p + p, .panel li + li { margin-top:12px; }
+  .panel ul { list-style:none; }
+  .panel a { border-bottom:1px solid var(--fg); }
+
+  @media (prefers-reduced-motion: reduce) { .info { animation:none; } }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="name" href="#" data-close>Adrian Fikri Fahrezi</a>
+  <button class="project" data-open="project" aria-expanded="false">Project</button>
+  <button class="info" data-open="info" aria-expanded="false">Info</button>
+</header>
+
+<main>
+  <!-- Ganti video.mp4 dengan file videomu, taruh di folder yang sama dengan index.html -->
+  <video src="video.mp4" autoplay muted loop playsinline preload="auto"></video>
+</main>
+
+<footer>
+  <button data-open="contact" aria-expanded="false">Contact</button>
+</footer>
+
+<section class="panel" id="project" aria-label="Project">
+  <div class="inner">
+    <ul>
+      <li>Nama project 1</li>
+      <li>Nama project 2</li>
+      <li>Nama project 3</li>
+    </ul>
+  </div>
+</section>
+
+<section class="panel" id="info" aria-label="Info">
+  <div class="inner">
+    <p>Adrian Fikri Fahrezi.</p>
+    <p>Tulis deskripsi singkat tentang dirimu di sini.</p>
+  </div>
+</section>
+
+<section class="panel" id="contact" aria-label="Contact">
+  <div class="inner">
+    <ul>
+      <li><a href="mailto:emailkamu@gmail.com">emailkamu@gmail.com</a></li>
+      <li><a href="https://instagram.com/usernamekamu" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="https://wa.me/628123456789" target="_blank" rel="noopener">WhatsApp</a></li>
+    </ul>
+  </div>
+</section>
+
+<script>
+  const panels = document.querySelectorAll('.panel');
+  const triggers = document.querySelectorAll('[data-open]');
+  function closeAll() {
+    panels.forEach(p => p.classList.remove('open'));
+    triggers.forEach(t => t.setAttribute('aria-expanded', 'false'));
+  }
+  triggers.forEach(t => t.addEventListener('click', () => {
+    const target = document.getElementById(t.dataset.open);
+    const wasOpen = target.classList.contains('open');
+    closeAll();
+    if (!wasOpen) { target.classList.add('open'); t.setAttribute('aria-expanded', 'true'); }
+  }));
+  document.querySelector('[data-close]').addEventListener('click', e => { e.preventDefault(); closeAll(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAll(); });
+</script>
+</body>
+</html>
