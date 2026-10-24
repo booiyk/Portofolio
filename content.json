@@ -1,17 +1,163 @@
 {
-  "name": "ADRIAN FIKRI FAHREZI",
-  "projects": [
+  "brand": "Fikri Studio",
+  "tagline": "Jasa pembuatan website & aplikasi untuk UMKM dan startup",
+  "about": "Kami membantu bisnis Anda tampil profesional di internet. Fokus pada hasil yang cepat, rapi, dan mudah dikelola sendiri. Setiap project dikerjakan langsung oleh praktisi, bukan dijual ulang ke pihak ketiga.",
+  "hero": {
+    "headline": "Website profesional, tanpa ribet",
+    "subheadline": "Landing page, company profile, toko online, dan aplikasi web custom. Selesai dalam 7–14 hari kerja.",
+    "primaryCta": { "label": "Konsultasi Gratis", "url": "https://wa.me/6281234567890?text=Halo%2C%20saya%20mau%20konsultasi" },
+    "secondaryCta": { "label": "Lihat Portofolio", "url": "#portfolio" }
+  },
+  "stats": [
+    { "value": "30+", "label": "Project selesai" },
+    { "value": "5★", "label": "Rating klien" },
+    { "value": "7–14", "label": "Hari kerja" }
+  ],
+  "services": [
     {
-      "date": "2026-10-23",
-      "title": "X",
-      "url": "https://x-official.vercel.app/"
+      "title": "Landing Page",
+      "price": "Rp 1.500.000",
+      "desc": "Satu halaman fokus untuk promosi produk, event, atau jasa. Cocok untuk iklan Meta/Google Ads.",
+      "features": ["Desain custom", "Mobile responsive", "Form kontak / WhatsApp", "SEO dasar", "Revisi 2x"]
+    },
+    {
+      "title": "Company Profile",
+      "price": "Rp 3.500.000",
+      "desc": "Website multi-halaman untuk profil bisnis, layanan, dan portofolio. Membangun kredibilitas.",
+      "features": ["5–7 halaman", "Desain custom", "Blog / artikel", "SEO dasar", "Revisi 3x", "Domain & hosting 1 tahun"]
+    },
+    {
+      "title": "Toko Online",
+      "price": "Rp 7.500.000",
+      "desc": "Toko online dengan katalog produk, keranjang, dan pembayaran. Bisa integrasi ongkir.",
+      "features": ["Katalog produk", "Keranjang & checkout", "Midtrans / Xendit", "Integrasi RajaOngkir", "Admin panel", "Revisi 3x"]
+    },
+    {
+      "title": "Aplikasi Web Custom",
+      "price": "Mulai Rp 15.000.000",
+      "desc": "Sistem internal, dashboard, atau aplikasi sesuai alur bisnis Anda. Scope & harga menyesuaikan.",
+      "features": ["Analisis kebutuhan", "Desain UI/UX", "Pengembangan bertahap", "Dokumentasi", "Support 1 bulan"]
     }
   ],
-  "info": "UI/UX designer and Web Developer. Designing clean, minimal interfaces for web and mobile.",
-  "contacts": [
+  "packages": [
     {
-      "label": "adrianfikri1312@gmail.com",
-      "url": "mailto:adrianfikri1312@gmail.com"
+      "name": "Starter",
+      "price": "Rp 1.500.000",
+      "highlight": false,
+      "items": ["1 halaman landing", "Desain custom", "Mobile responsive", "Form WhatsApp", "Revisi 2x"]
+    },
+    {
+      "name": "Business",
+      "price": "Rp 3.500.000",
+      "highlight": true,
+      "items": ["5 halaman company profile", "Desain custom", "Blog artikel", "SEO dasar", "Revisi 3x", "Domain & hosting 1 tahun", "Support 30 hari"]
+    },
+    {
+      "name": "Commerce",
+      "price": "Rp 7.500.000",
+      "highlight": false,
+      "items": ["Toko online", "Katalog produk", "Checkout + pembayaran", "Integrasi ongkir", "Admin panel", "Revisi 3x", "Support 60 hari"]
     }
-  ]
+  ],
+  "portfolio": [
+    {
+      "title": "Kopi Senja",
+      "client": "Kedai kopi lokal",
+      "year": "2024",
+      "url": "https://example.com/kopi-senja",
+      "image": "images/kopi-senja.jpg",
+      "desc": "Landing page dengan menu digital dan tombol pesan WhatsApp."
+    },
+    {
+      "title": "Toko Bunga Mawar",
+      "client": "Toko bunga online",
+      "year": "2024",
+      "url": "https://example.com/bunga-mawar",
+      "image": "images/bunga-mawar.jpg",
+      "desc": "Toko online dengan katalog, keranjang, dan pembayaran Midtrans."
+    },
+    {
+      "title": "Bengkel Jaya Motor",
+      "client": "Bengkel motor",
+      "year": "2023",
+      "url": "https://example.com/jaya-motor",
+      "image": "images/jaya-motor.jpg",
+      "desc": "Company profile dengan booking servis online."
+    }
+  ],
+  "process": [
+    { "step": "01", "title": "Konsultasi", "desc": "Diskusi kebutuhan, target, dan referensi. Gratis, tanpa komitmen." },
+    { "step": "02", "title": "Penawaran", "desc": "Kami kirim proposal berisi scope, timeline, dan harga." },
+    { "step": "03", "title": "Desain", "desc": "Mockup desain dikirim untuk direview sebelum masuk coding." },
+    { "step": "04", "title": "Pengembangan", "desc": "Coding, integrasi, dan testing. Update progres berkala." },
+    { "step": "05", "title": "Launch", "desc": "Deploy ke domain, pelatihan admin, dan serah terima." }
+  ],
+  "testimonials": [
+    {
+      "name": "Rina",
+      "role": "Pemilik Kopi Senja",
+      "rating": 5,
+      "text": "Prosesnya cepat dan komunikatif. Website jadi tepat waktu dan hasilnya rapi. Pesanan lewat WhatsApp naik setelah website live."
+    },
+    {
+      "name": "Budi",
+      "role": "Owner Toko Bunga Mawar",
+      "rating": 5,
+      "text": "Dibantu dari nol sampai online. Admin panelnya mudah dipakai, saya bisa update produk sendiri."
+    },
+    {
+      "name": "Pak Jaya",
+      "role": "Bengkel Jaya Motor",
+      "rating": 5,
+      "text": "Awalnya ragu, tapi hasilnya memuaskan. Booking servis online bikin pelanggan lebih teratur."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Berapa lama pengerjaan?",
+      "a": "Landing page 3–5 hari kerja, company profile 7–10 hari, toko online 10–14 hari. Tergantung kompleksitas dan kecepatan feedback."
+    },
+    {
+      "q": "Apakah termasuk domain dan hosting?",
+      "a": "Paket Business dan Commerce sudah termasuk domain .com dan hosting 1 tahun. Paket Starter bisa ditambahkan dengan biaya terpisah."
+    },
+    {
+      "q": "Bisa revisi berapa kali?",
+      "a": "Starter 2x, Business 3x, Commerce 3x. Revisi di luar itu dikenakan biaya per jam."
+    },
+    {
+      "q": "Bagaimana sistem pembayaran?",
+      "a": "DP 50% di awal, pelunasan setelah website selesai dan disetujui. Transfer bank atau e-wallet."
+    },
+    {
+      "q": "Apakah saya bisa update sendiri?",
+      "a": "Ya. Untuk paket Business dan Commerce, kami sediakan admin panel dan sesi pelatihan singkat via Zoom."
+    },
+    {
+      "q": "Apakah website sudah SEO friendly?",
+      "a": "Ya, struktur HTML semantik, meta tag, sitemap, dan kecepatan loading dioptimalkan. Untuk SEO lanjutan tersedia paket terpisah."
+    }
+  ],
+  "cta": {
+    "text": "Siap bikin website untuk bisnis Anda?",
+    "subtext": "Konsultasi gratis, tanpa komitmen. Balas cepat di jam kerja.",
+    "button": "Chat WhatsApp",
+    "url": "https://wa.me/6281234567890?text=Halo%2C%20saya%20mau%20konsultasi%20jasa%20website"
+  },
+  "contacts": [
+    { "label": "WhatsApp", "url": "https://wa.me/6281234567890" },
+    { "label": "Email", "url": "mailto:halo@fikristudio.com" },
+    { "label": "Instagram", "url": "https://instagram.com/fikristudio" },
+    { "label": "GitHub", "url": "https://github.com/booiyk" }
+  ],
+  "footer": {
+    "copyright": "© 2024 Fikri Studio",
+    "note": "Dibuat dengan HTML, CSS, dan JavaScript."
+  },
+  "meta": {
+    "title": "Fikri Studio — Jasa Pembuatan Website & Aplikasi",
+    "description": "Jasa pembuatan website landing page, company profile, toko online, dan aplikasi web custom. Selesai 7–14 hari kerja.",
+    "lang": "id",
+    "themeColor": "#000000"
+  }
 }
