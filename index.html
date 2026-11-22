@@ -7,19 +7,6 @@
 <meta name="description" content="Portofolio Adrian Fikri Fahrezi — desain grafis, 3D, UI & web.">
 <meta name="theme-color" content="#0f0e0c">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Adrian Fikri Fahrezi">
-<meta property="og:title" content="Adrian Fikri Fahrezi — Portfolio">
-<meta property="og:description" content="Portofolio Adrian Fikri Fahrezi — desain grafis, 3D, UI & web.">
-<meta property="og:url" content="https://portofolio-tawny-three-79.vercel.app/">
-<meta property="og:image" content="https://portofolio-tawny-three-79.vercel.app/og-cover.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Adrian Fikri Fahrezi — Portfolio">
-<meta name="twitter:description" content="Portofolio Adrian Fikri Fahrezi — desain grafis, 3D, UI & web.">
-<meta name="twitter:image" content="https://portofolio-tawny-three-79.vercel.app/og-cover.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&display=swap" rel="stylesheet">
@@ -198,20 +185,6 @@
   #contact .contact-close { display:block; margin-bottom:40px; font-weight:700; font-size:15px; }
   #contact .contact-close:hover { text-decoration:underline; }
 
-  .search-wrap { padding:0 32px 24px; }
-  .search-wrap input {
-    width:100%; background:transparent; border:1px solid #3a382f; color:var(--so-bone);
-    padding:12px 16px; font:inherit; font-size:17px; border-radius:0;
-  }
-  .search-wrap input::placeholder { color:#6f6c60; }
-  .search-wrap input:focus { outline:1px solid var(--so-bone); outline-offset:2px; }
-  .noscript {
-    position:fixed; inset:0; z-index:200; background:var(--so-black); color:var(--so-bone);
-    display:flex; align-items:center; justify-content:center; text-align:center;
-    padding:32px; font-size:17px; line-height:1.6;
-  }
-  .noscript a { border-bottom:1px solid currentColor; }
-
   @media (max-width:900px) {
     header { padding-left:20px; padding-right:20px; font-size:14px; }
     .hero-caption { left:20px; font-size:15px; }
@@ -238,7 +211,6 @@
 </head>
 <body>
 
-<noscript><div class="noscript"><div>Portofolio ini butuh JavaScript.<br>Daftar project: <a href="content.json">content.json</a> — aktifkan JavaScript lalu muat ulang.</div></div></noscript>
 <div id="loader" aria-hidden="true"><div>ADRIAN FIKRI FAHREZI<br>PORTFOLIO</div></div>
 
 <header>
@@ -314,51 +286,6 @@
     return dup ? [titleText] : [forText, titleText].filter(Boolean);
   }
 
-  /* ---------- Routing deep-link: /work/<slug>, /work, /information, /contact ---------- */
-  const SITE_NAME = 'Adrian Fikri Fahrezi';
-  const slugMap = {};
-  function slugify(p) {
-    const base = String(p.title || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-      .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-    return base + '-' + String(p.date || '').slice(0, 10);
-  }
-  function buildSlugs() {
-    const seen = {};
-    currentProjects.forEach(p => {
-      let s = slugify(p);
-      if (seen[s]) { seen[s] += 1; s = s + '-' + seen[s]; } else { seen[s] = 1; }
-      slugMap[s] = p;
-    });
-  }
-  function projectSlug(p) {
-    for (const k in slugMap) if (slugMap[k] === p) return k;
-    return slugify(p);
-  }
-  function navigate(path, title) {
-    document.title = title || SITE_NAME;
-    if (window.location.pathname !== path) history.pushState({}, '', path);
-  }
-  function routeFromLocation() {
-    const path = window.location.pathname.replace(/\/+$/, '') || '/';
-    if (path === '/work') {
-      closeAll(); renderArchive(currentProjects, true); openPanel('project');
-      document.title = 'Project Archive — ' + SITE_NAME;
-    } else if (path === '/information') {
-      closeAll(); openPanel('info');
-      document.title = 'Information — ' + SITE_NAME;
-    } else if (path === '/contact') {
-      closeAll(); openPanel('contact');
-      document.title = 'Contact — ' + SITE_NAME;
-    } else if (path.startsWith('/work/')) {
-      const proj = slugMap[path.slice(6)];
-      if (proj) showDetail(proj, { push: false });
-      else { closeAll(); renderArchive(currentProjects, true); openPanel('project'); document.title = 'Project Archive — ' + SITE_NAME; }
-    } else {
-      closeAll(); document.title = SITE_NAME;
-    }
-  }
-  window.addEventListener('popstate', routeFromLocation);
-
   let currentProjects = [];
   let slideIndex = 0;
   let slideTimer = null;
@@ -417,37 +344,29 @@
     const thYr = document.createElement('th');
     const yrBtn = document.createElement('button');
     yrBtn.textContent = '↓ Yr.';
-    let desc = true;
-    const tbody = document.createElement('tbody');
-    const drawRows = (rows) => {
-      tbody.textContent = '';
-      rows.forEach(p => {
-        const tr = document.createElement('tr');
-        const yr = document.createElement('td'); yr.className = 'yr'; yr.textContent = yearOf(p); tr.appendChild(yr);
-        const f = document.createElement('td'); f.textContent = p['for'] || ''; tr.appendChild(f);
-        const proj = document.createElement('td');
-        const b = document.createElement('button');
-        b.className = 'detail-link'; b.textContent = p.title || '';
-        b.addEventListener('click', () => showDetail(p));
-        proj.appendChild(b); tr.appendChild(proj);
-        const k = document.createElement('td'); k.textContent = p.kind || ''; tr.appendChild(k);
-        tbody.appendChild(tr);
-      });
-    };
     yrBtn.addEventListener('click', () => {
-      desc = !desc;
-      yrBtn.textContent = desc ? '↓ Yr.' : '↑ Yr.';
-      const rows = [...list].sort((a, b) => desc
-        ? String(b.date).localeCompare(String(a.date))
-        : String(a.date).localeCompare(String(b.date)));
-      drawRows(rows);
+      const desc = yrBtn.textContent.startsWith('↓');
+      yrBtn.textContent = desc ? '↑ Yr.' : '↓ Yr.';
+      renderArchive(list, !desc);
     });
     thYr.appendChild(yrBtn); trh.appendChild(thYr);
     ['For', 'Project', 'Kind'].forEach(h => {
       const th = document.createElement('th'); th.textContent = h; trh.appendChild(th);
     });
     thead.appendChild(trh); table.appendChild(thead);
-    drawRows(list);
+    const tbody = document.createElement('tbody');
+    list.forEach(p => {
+      const tr = document.createElement('tr');
+      const yr = document.createElement('td'); yr.className = 'yr'; yr.textContent = yearOf(p); tr.appendChild(yr);
+      const f = document.createElement('td'); f.textContent = p['for'] || ''; tr.appendChild(f);
+      const proj = document.createElement('td');
+      const b = document.createElement('button');
+      b.className = 'detail-link'; b.textContent = p.title || '';
+      b.addEventListener('click', () => showDetail(p));
+      proj.appendChild(b); tr.appendChild(proj);
+      const k = document.createElement('td'); k.textContent = p.kind || ''; tr.appendChild(k);
+      tbody.appendChild(tr);
+    });
     table.appendChild(tbody);
     wrap.appendChild(table);
     return wrap;
@@ -476,21 +395,7 @@
       intro.appendChild(all);
     }
     pl.appendChild(intro);
-    const searchWrap = document.createElement('div');
-    searchWrap.className = 'search-wrap';
-    const input = document.createElement('input');
-    input.type = 'search'; input.placeholder = 'Search'; input.setAttribute('aria-label', 'Search projects');
-    searchWrap.appendChild(input);
-    pl.appendChild(searchWrap);
-    const tableHost = document.createElement('div');
-    pl.appendChild(tableHost);
-    const drawTable = (rows) => { tableHost.textContent = ''; tableHost.appendChild(archiveTable(rows)); };
-    drawTable(sorted);
-    input.addEventListener('input', () => {
-      const q = input.value.trim().toLowerCase();
-      drawTable(!q ? sorted : sorted.filter(p =>
-        [p.title, p['for'], p.kind, yearOf(p)].join(' ').toLowerCase().includes(q)));
-    });
+    pl.appendChild(archiveTable(sorted));
     const foot = document.createElement('div');
     foot.className = 'archive-foot';
     const left = document.createElement('div');
@@ -504,15 +409,15 @@
   }
 
   /* ---------- Detail project ---------- */
-  function showDetail(p, opts) {
+  function showDetail(p) {
     const el = document.querySelector('#detail .inner');
     el.textContent = '';
     const top = document.createElement('div'); top.className = 'detail-top';
     const back = document.createElement('button');
     back.textContent = 'Adrian Fikri Fahrezi — ' + (p.title || '');
-    back.addEventListener('click', () => { navigate('/work', 'Project Archive — ' + SITE_NAME); closeAll(); openPanel('project'); });
+    back.addEventListener('click', () => { closeAll(); openPanel('project'); });
     const arch = document.createElement('button'); arch.textContent = 'Project Archive';
-    arch.addEventListener('click', () => { navigate('/work', 'Project Archive — ' + SITE_NAME); closeAll(); openPanel('project'); });
+    arch.addEventListener('click', () => { closeAll(); openPanel('project'); });
     top.appendChild(back); top.appendChild(arch); el.appendChild(top);
 
     const h = document.createElement('h1'); h.className = 'detail-title';
@@ -577,7 +482,6 @@
     document.getElementById('detail').classList.add('open');
     document.getElementById('detail').scrollTop = 0;
     window.scrollTo(0, 0);
-    if (!opts || opts.push !== false) navigate('/work/' + projectSlug(p), (p.title || '') + ' — ' + SITE_NAME);
   }
 
   /* ---------- Info & Contact ---------- */
@@ -625,7 +529,6 @@
       const b = document.createElement('button');
       b.textContent = name;
       b.addEventListener('click', () => {
-        navigate('/work', 'Project Archive — ' + SITE_NAME);
         closeAll();
         renderArchive(currentProjects.filter(p => (p['for'] || '').trim() === name), true);
         openPanel('project');
@@ -649,7 +552,7 @@
     contact.appendChild(document.createElement('br'));
     const cta = document.createElement('button');
     cta.className = 'info-cta'; cta.textContent = 'Contact Us';
-    cta.addEventListener('click', () => { navigate('/contact', 'Contact — ' + SITE_NAME); closeAll(); openPanel('contact'); });
+    cta.addEventListener('click', () => { closeAll(); openPanel('contact'); });
     contact.appendChild(cta);
     right.appendChild(contact);
 
@@ -692,8 +595,6 @@
     renderArchive(currentProjects, true);
     renderInfo(c);
     renderContact(c);
-    buildSlugs();
-    routeFromLocation();
   }
 
   /* ---------- Panel ---------- */
@@ -707,24 +608,15 @@
     panels.forEach(p => p.classList.remove('open'));
     triggers.forEach(t => t.setAttribute('aria-expanded', 'false'));
   }
-  const ROUTES = {
-    project: ['/work', 'Project Archive — ' + SITE_NAME],
-    info: ['/information', 'Information — ' + SITE_NAME],
-    contact: ['/contact', 'Contact — ' + SITE_NAME]
-  };
   triggers.forEach(t => t.addEventListener('click', (e) => {
     e.stopPropagation();
     const target = document.getElementById(t.dataset.open);
     const wasOpen = target.classList.contains('open');
     closeAll();
-    if (!wasOpen) {
-      const r = ROUTES[t.dataset.open];
-      if (r) navigate(r[0], r[1]);
-      openPanel(t.dataset.open);
-    } else navigate('/', SITE_NAME);
+    if (!wasOpen) openPanel(t.dataset.open);
   }));
-  document.querySelector('[data-close]').addEventListener('click', e => { e.preventDefault(); navigate('/', SITE_NAME); closeAll(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') { navigate('/', SITE_NAME); closeAll(); } });
+  document.querySelector('[data-close]').addEventListener('click', e => { e.preventDefault(); closeAll(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAll(); });
   document.getElementById('hero').addEventListener('click', () => showSlide(slideIndex + 1));
 
   fetch('content.json', { cache: 'no-store' })
