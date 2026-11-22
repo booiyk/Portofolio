@@ -3,6 +3,14 @@
   "projects": [
     {
       "date": "2026-11-22",
+      "title": "Propfolio — Journal Prop Firm",
+      "for": "Propfolio",
+      "kind": "Website, Web App",
+      "about": "Aplikasi web untuk mencatat pembelian akun/challenge prop firm, biaya tambahan, payout, dan ROI dalam USD. Data tersimpan lokal di IndexedDB browser, tanpa login atau koneksi trading. Ada mode contoh, grafik analisis 6/12 bulan, dan backup JSON. QA: 55 tes unit + 21 skenario e2e lulus.",
+      "url": "https://portofolio-tawny-three-79.vercel.app/propfolio/"
+    },
+    {
+      "date": "2026-11-22",
       "title": "MANSON — Blender 3D",
       "for": "MANSON",
       "kind": "3D, Motion",
