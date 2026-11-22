@@ -150,8 +150,8 @@
     thead.innerHTML = '<tr><th>Yr.</th><th>For</th><th>Project</th><th>Kind</th></tr>';
     table.appendChild(thead);
     const tbody = document.createElement('tbody');
-    [...(c.projects || [])]
-      .sort((a, b) => String(b.date).localeCompare(String(a.date)))
+    currentProjects = [...(c.projects || [])].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+    currentProjects
       .forEach(p => {
         const tr = document.createElement('tr');
         const yr = document.createElement('td'); yr.className = 'yr'; yr.textContent = String(p.date || '').slice(0, 4); tr.appendChild(yr);
@@ -182,6 +182,8 @@
       cl.appendChild(row);
     });
   }
+
+  let currentProjects = [];
 
   function showDetail(p) {
     const el = document.querySelector('#detail .inner');
@@ -218,6 +220,29 @@
       media.appendChild(makeLink('Buka Website', url));
     }
     el.appendChild(media);
+    const archWrap = document.createElement('div');
+    archWrap.className = 'archive-wrap';
+    archWrap.style.marginTop = '64px';
+    const atable = document.createElement('table');
+    atable.className = 'archive';
+    const athead = document.createElement('thead');
+    athead.innerHTML = '<tr><th>Yr.</th><th>For</th><th>Project</th><th>Kind</th></tr>';
+    atable.appendChild(athead);
+    const atbody = document.createElement('tbody');
+    (currentProjects || []).forEach(p2 => {
+      const tr = document.createElement('tr');
+      const yr = document.createElement('td'); yr.className = 'yr'; yr.textContent = String(p2.date || '').slice(0, 4); tr.appendChild(yr);
+      const f = document.createElement('td'); f.textContent = p2['for'] || ''; tr.appendChild(f);
+      const proj = document.createElement('td');
+      const b2 = document.createElement('button'); b2.className = 'detail-link'; b2.textContent = p2.title || '';
+      b2.addEventListener('click', () => showDetail(p2));
+      proj.appendChild(b2); tr.appendChild(proj);
+      const k = document.createElement('td'); k.textContent = p2.kind || ''; tr.appendChild(k);
+      atbody.appendChild(tr);
+    });
+    atable.appendChild(atbody);
+    archWrap.appendChild(atable);
+    el.appendChild(archWrap);
     closeAll();
     document.getElementById('detail').classList.add('open');
     window.scrollTo(0, 0);
