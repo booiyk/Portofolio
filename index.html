@@ -44,6 +44,17 @@
     margin:auto; width:100%; max-width:520px;
     text-align:center; font-weight:700; font-size:16px; line-height:1.6;
   }
+  #project .inner { max-width:960px; text-align:left; }
+  .archive-wrap { overflow-x:auto; }
+  table.archive { width:100%; border-collapse:collapse; font-size:16px; line-height:1.5; }
+  table.archive th, table.archive td { text-align:left; padding:14px 12px; border-bottom:1px solid #333; vertical-align:top; }
+  table.archive th { font-size:13px; opacity:.6; font-weight:700; }
+  table.archive td.yr { white-space:nowrap; }
+  table.archive a { border-bottom:1px solid var(--fg); }
+  @media (max-width:640px) {
+    table.archive { font-size:14px; }
+    table.archive th:nth-child(4), table.archive td:nth-child(4) { display:none; }
+  }
   .row + .row { margin-top:14px; }
   .row .d { margin-right:.7em; }
   .panel a { border-bottom:1px solid var(--fg); }
@@ -77,8 +88,8 @@
   const DEFAULT = {
     name: "Adrian Fikri Fahrezi",
     projects: [
-      { date: "2026-11-26", title: "Nama project 1", url: "" },
-      { date: "2026-10-12", title: "Nama project 2", url: "" }
+      { date: "2026-11-22", title: "MANSON — Blender 3D", for: "MANSON", kind: "3D, Motion", url: "" },
+      { date: "2026-11-22", title: "Héritiers du Vide", for: "Héritiers du Vide", kind: "Website", url: "" }
     ],
     info: "Tulis deskripsi singkat tentang dirimu di sini.",
     contacts: [
@@ -115,18 +126,31 @@
 
     const pl = document.querySelector('#project .inner');
     pl.textContent = '';
+    const wrap = document.createElement('div');
+    wrap.className = 'archive-wrap';
+    const table = document.createElement('table');
+    table.className = 'archive';
+    const thead = document.createElement('thead');
+    thead.innerHTML = '<tr><th>Yr.</th><th>For</th><th>Project</th><th>Kind</th></tr>';
+    table.appendChild(thead);
+    const tbody = document.createElement('tbody');
     [...(c.projects || [])]
       .sort((a, b) => String(b.date).localeCompare(String(a.date)))
       .forEach(p => {
-        const row = document.createElement('div');
-        row.className = 'row';
-        const d = formatDate(p.date);
-        if (d) { const s = document.createElement('span'); s.className = 'd'; s.textContent = d; row.appendChild(s); }
+        const tr = document.createElement('tr');
+        const yr = document.createElement('td'); yr.className = 'yr'; yr.textContent = String(p.date || '').slice(0, 4); tr.appendChild(yr);
+        const f = document.createElement('td'); f.textContent = p.for || ''; tr.appendChild(f);
+        const proj = document.createElement('td');
         const url = safeUrl(p.url);
-        if (url) row.appendChild(makeLink(p.title || '', url));
-        else row.appendChild(document.createTextNode(p.title || ''));
-        pl.appendChild(row);
+        if (url) proj.appendChild(makeLink(p.title || '', url));
+        else proj.appendChild(document.createTextNode(p.title || ''));
+        tr.appendChild(proj);
+        const k = document.createElement('td'); k.textContent = p.kind || ''; tr.appendChild(k);
+        tbody.appendChild(tr);
       });
+    table.appendChild(tbody);
+    wrap.appendChild(table);
+    pl.appendChild(wrap);
 
     document.querySelector('#info .inner').textContent = c.info || '';
 
