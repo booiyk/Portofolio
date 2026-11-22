@@ -77,7 +77,7 @@
   .hero-contact:hover { text-decoration:underline; }
   .hero-progress { position:absolute; left:0; right:0; bottom:0; height:2px; z-index:5; background:transparent; }
   .hero-progress span { display:block; height:100%; width:0; background:var(--so-bone); }
-  .hero-progress span.run { transition:width 3s linear; width:100%; }
+  .hero-progress span.run { transition:width 1.5s linear; width:100%; }
   .hero-side {
     position:absolute; left:0; top:50%; transform:translateY(-50%) rotate(180deg);
     writing-mode:vertical-rl; z-index:5; font-size:11px; letter-spacing:.08em;
@@ -330,7 +330,7 @@
     void bar.offsetWidth;
     bar.classList.add('run');
     clearTimeout(slideTimer);
-    slideTimer = setTimeout(() => showSlide(slideIndex + 1), 3000);
+    slideTimer = setTimeout(() => showSlide(slideIndex + 1), 1500);
   }
 
   /* ---------- Tabel arsip (dipakai di panel Project & di bawah detail) ---------- */
