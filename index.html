@@ -76,7 +76,7 @@
   .hero-contact:hover { text-decoration:underline; }
   .hero-progress { position:absolute; left:0; right:0; bottom:0; height:2px; z-index:5; background:transparent; }
   .hero-progress span { display:block; height:100%; width:0; background:var(--so-bone); }
-  .hero-progress span.run { transition:width 7s linear; width:100%; }
+  .hero-progress span.run { transition:width 3s linear; width:100%; }
   .hero-side {
     position:absolute; left:0; top:50%; transform:translateY(-50%) rotate(180deg);
     writing-mode:vertical-rl; z-index:5; font-size:11px; letter-spacing:.08em;
@@ -250,7 +250,11 @@
     "BASTARD",
     "Google Card Review — Landing Page",
     "EXTRAWELT",
-    "Héritiers du Vide"
+    "Héritiers du Vide",
+    "Propfolio — Journal Prop Firm",
+    "Opening OldItsGold",
+    "PARANOID INC.",
+    "STUDIO INBRAIN"
   ];
   const TEXT_SLIDE_BGS = ["bg-white", "bg-blue", "bg-bone", "bg-red"];
 
@@ -291,32 +295,21 @@
     currentProjects.forEach(p => { byTitle[p.title] = p; });
     const picked = FEATURED_TITLES.map(t => byTitle[t]).filter(Boolean);
     const rest = currentProjects.filter(p => !picked.includes(p));
-    return picked.concat(rest).slice(0, 5);
+    return picked.concat(rest).slice(0, 9);
   }
   function buildSlides() {
     const box = document.getElementById('slides');
     box.textContent = '';
+    /* Hero hanya judul (slide teks), tanpa gambar/video — looping cepat. */
     const feats = featuredProjects();
     feats.forEach((p, i) => {
       const s = document.createElement('div');
-      s.className = 'slide';
+      s.className = 'slide text-slide ' + TEXT_SLIDE_BGS[i % TEXT_SLIDE_BGS.length];
       s.dataset.index = i;
-      const url = safeUrl(p.url);
-      if (url && /\.mp4$/i.test(url)) {
-        const v = document.createElement('video');
-        v.src = url; v.muted = true; v.loop = true; v.playsInline = true; v.autoplay = true;
-        s.appendChild(v);
-      } else if (url && /\.(jpg|jpeg|png|gif|webp)$/i.test(url)) {
-        const img = document.createElement('img');
-        img.src = url; img.alt = p.title || '';
-        s.appendChild(img);
-      } else {
-        s.classList.add('text-slide', TEXT_SLIDE_BGS[i % TEXT_SLIDE_BGS.length]);
-        const t = document.createElement('div');
-        t.className = 'display';
-        t.textContent = detailTitleLines(p).join(' — ');
-        s.appendChild(t);
-      }
+      const t = document.createElement('div');
+      t.className = 'display';
+      t.textContent = detailTitleLines(p).join(' — ');
+      s.appendChild(t);
       box.appendChild(s);
     });
     showSlide(0);
@@ -328,7 +321,7 @@
     slides.forEach((s, k) => s.classList.toggle('active', k === slideIndex));
     const p = featuredProjects()[slideIndex];
     const cap = document.getElementById('hero-caption');
-    cap.textContent = p ? ((p['for'] ? p['for'] + ' — ' : '') + (p.title || '')) : '';
+    cap.textContent = p ? detailTitleLines(p).join(' — ') : '';
     cap.onclick = (e) => { e.stopPropagation(); if (p) showDetail(p); };
     document.getElementById('hero-side').textContent = p ? (p.title || '') : '';
     const bar = document.getElementById('hero-progress');
@@ -336,7 +329,7 @@
     void bar.offsetWidth;
     bar.classList.add('run');
     clearTimeout(slideTimer);
-    slideTimer = setTimeout(() => showSlide(slideIndex + 1), 7000);
+    slideTimer = setTimeout(() => showSlide(slideIndex + 1), 3000);
   }
 
   /* ---------- Tabel arsip (dipakai di panel Project & di bawah detail) ---------- */
