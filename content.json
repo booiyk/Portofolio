@@ -1,22 +1,19 @@
 {
   "name": "Adrian Fikri Fahrezi",
-  "projects": [
-    {
-      "date": "2026-11-26",
-      "title": "Nama project 1",
-      "url": ""
-    },
-    {
-      "date": "2026-10-12",
-      "title": "Nama project 2",
-      "url": ""
-    }
-  ],
-  "info": "Tulis deskripsi singkat tentang dirimu di sini.",
+  "projects": [],
+  "info": "Mahasiswa S1 Desain Komunikasi Visual, Universitas Catur Insan Cendekia (2021-sekarang). Latar belakang desain grafis, desain 3D, dan desain UI. Memahami AI, blockchain, dan crypto. Tools: Figma, Blender, Adobe Illustrator, Adobe Photoshop, Canva. Trader di FundingPips (Jan 2026-sekarang), QC Manager di PT DAC Indonesia (Des 2025-Jan 2026).",
   "contacts": [
     {
-      "label": "emailkamu@gmail.com",
-      "url": "mailto:emailkamu@gmail.com"
+      "label": "booiyk1@gmail.com",
+      "url": "mailto:booiyk1@gmail.com"
+    },
+    {
+      "label": "085925121092",
+      "url": "https://wa.me/6285925121092"
+    },
+    {
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/in/adrianfikri/"
     }
   ]
 }
