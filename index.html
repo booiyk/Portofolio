@@ -56,6 +56,20 @@
     table.archive { font-size:14px; }
     table.archive th:nth-child(4), table.archive td:nth-child(4) { display:none; }
   }
+  #detail .inner { max-width:none; width:100%; margin:0; text-align:left; }
+  .detail-top { display:flex; justify-content:space-between; padding:0 20px; font-size:13px; opacity:.85; }
+  .detail-title { font-size:clamp(48px, 8vw, 96px); line-height:1.05; text-align:center; font-weight:700; margin:48px 0 64px; }
+  .detail-meta { display:grid; grid-template-columns:1fr 220px 100px; gap:24px; padding:0 20px 48px; }
+  .detail-meta h3 { font-size:13px; opacity:.6; margin-bottom:12px; }
+  .detail-meta p { font-size:16px; line-height:1.6; white-space:pre-line; }
+  .detail-media { padding:0 20px 40px; }
+  .detail-media img, .detail-media video { width:100%; display:block; background:#000; }
+  .detail-media a { border-bottom:1px solid var(--fg); }
+  button.detail-link { text-align:left; border-bottom:1px solid var(--fg); }
+  @media (max-width:640px) {
+    .detail-meta { grid-template-columns:1fr 1fr; }
+    .detail-title { margin:32px 0 40px; }
+  }
   .row + .row { margin-top:14px; }
   .row .d { margin-right:.7em; }
   .panel a { border-bottom:1px solid var(--fg); }
@@ -81,6 +95,7 @@
 </footer>
 
 <section class="panel" id="project" aria-label="Project"><div class="inner"></div></section>
+<section class="panel" id="detail" aria-label="Detail"><div class="inner detail-inner"></div></section>
 <section class="panel" id="info" aria-label="Info"><div class="inner info-text"></div></section>
 <section class="panel" id="contact" aria-label="Contact"><div class="inner"></div></section>
 
@@ -142,9 +157,10 @@
         const yr = document.createElement('td'); yr.className = 'yr'; yr.textContent = String(p.date || '').slice(0, 4); tr.appendChild(yr);
         const f = document.createElement('td'); f.textContent = p.for || ''; tr.appendChild(f);
         const proj = document.createElement('td');
-        const url = safeUrl(p.url);
-        if (url) proj.appendChild(makeLink(p.title || '', url));
-        else proj.appendChild(document.createTextNode(p.title || ''));
+        const b = document.createElement('button');
+        b.className = 'detail-link'; b.textContent = p.title || '';
+        b.addEventListener('click', () => showDetail(p));
+        proj.appendChild(b);
         tr.appendChild(proj);
         const k = document.createElement('td'); k.textContent = p.kind || ''; tr.appendChild(k);
         tbody.appendChild(tr);
@@ -165,6 +181,46 @@
       else row.appendChild(document.createTextNode(k.label || ''));
       cl.appendChild(row);
     });
+  }
+
+  function showDetail(p) {
+    const el = document.querySelector('#detail .inner');
+    el.textContent = '';
+    const top = document.createElement('div'); top.className = 'detail-top';
+    const back = document.createElement('button'); back.textContent = 'Adrian Fikri Fahrezi — ' + (p.title || '');
+    back.addEventListener('click', () => { closeAll(); document.getElementById('project').classList.add('open'); });
+    const arch = document.createElement('button'); arch.textContent = 'Project Archive';
+    arch.addEventListener('click', () => { closeAll(); document.getElementById('project').classList.add('open'); });
+    top.appendChild(back); top.appendChild(arch); el.appendChild(top);
+    const h = document.createElement('h1'); h.className = 'detail-title';
+    h.innerHTML = '';
+    const f1 = document.createElement('div'); f1.textContent = p['for'] || '';
+    const t1 = document.createElement('div'); t1.textContent = p.title || '';
+    h.appendChild(f1); h.appendChild(t1); el.appendChild(h);
+    const meta = document.createElement('div'); meta.className = 'detail-meta';
+    const about = document.createElement('div');
+    about.innerHTML = '<h3>About</h3>';
+    const ap = document.createElement('p'); ap.textContent = p.about || (p.title || ''); about.appendChild(ap); meta.appendChild(about);
+    const kind = document.createElement('div');
+    kind.innerHTML = '<h3>Kind</h3>';
+    const kp = document.createElement('p'); kp.textContent = (p.kind || '').split(',').map(x => x.trim()).join('\n'); kind.appendChild(kp); meta.appendChild(kind);
+    const yr = document.createElement('div');
+    yr.innerHTML = '<h3>Yr.</h3>';
+    const yp = document.createElement('p'); yp.textContent = String(p.date || '').slice(0, 4); yr.appendChild(yp); meta.appendChild(yr);
+    el.appendChild(meta);
+    const media = document.createElement('div'); media.className = 'detail-media';
+    const url = safeUrl(p.url);
+    if (url && /\.(jpg|jpeg|png|gif|webp)$/i.test(url)) {
+      const img = document.createElement('img'); img.src = url; img.alt = p.title || ''; media.appendChild(img);
+    } else if (url && /\.mp4$/i.test(url)) {
+      const v = document.createElement('video'); v.src = url; v.controls = true; v.autoplay = true; v.muted = true; v.loop = true; v.playsInline = true; media.appendChild(v);
+    } else if (url) {
+      media.appendChild(makeLink('Buka Website', url));
+    }
+    el.appendChild(media);
+    closeAll();
+    document.getElementById('detail').classList.add('open');
+    window.scrollTo(0, 0);
   }
 
   fetch('content.json', { cache: 'no-store' })
