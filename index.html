@@ -64,6 +64,7 @@
   .detail-meta p { font-size:16px; line-height:1.6; white-space:pre-line; }
   .detail-media { padding:0 20px 40px; }
   .detail-media img, .detail-media video { width:100%; display:block; background:#000; }
+  .detail-media iframe { width:100%; height:100vh; border:0; display:block; background:#fff; }
   .detail-media a { border-bottom:1px solid var(--fg); }
   button.detail-link { text-align:left; border-bottom:1px solid var(--fg); }
   @media (max-width:640px) {
@@ -217,7 +218,13 @@
     } else if (url && /\.mp4$/i.test(url)) {
       const v = document.createElement('video'); v.src = url; v.controls = true; v.autoplay = true; v.muted = true; v.loop = true; v.playsInline = true; media.appendChild(v);
     } else if (url) {
-      media.appendChild(makeLink('Buka Website', url));
+      const frame = document.createElement('iframe');
+      frame.src = url; frame.title = p.title || ''; frame.loading = 'lazy';
+      media.appendChild(frame);
+      const open = document.createElement('div');
+      open.style.marginTop = '16px';
+      open.appendChild(makeLink('Buka Website di tab baru', url));
+      media.appendChild(open);
     }
     el.appendChild(media);
     const archWrap = document.createElement('div');
