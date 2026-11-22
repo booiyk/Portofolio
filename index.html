@@ -217,6 +217,14 @@
       const img = document.createElement('img'); img.src = url; img.alt = p.title || ''; media.appendChild(img);
     } else if (url && /\.mp4$/i.test(url)) {
       const v = document.createElement('video'); v.src = url; v.controls = true; v.autoplay = true; v.muted = true; v.loop = true; v.playsInline = true; media.appendChild(v);
+    } else if (url && /\.pdf$/i.test(url)) {
+      const frame = document.createElement('iframe');
+      frame.src = url; frame.title = p.title || ''; frame.loading = 'lazy';
+      media.appendChild(frame);
+      const open = document.createElement('div');
+      open.style.marginTop = '16px';
+      open.appendChild(makeLink('Buka Sertifikat (PDF)', url));
+      media.appendChild(open);
     } else if (url) {
       const frame = document.createElement('iframe');
       frame.src = url; frame.title = p.title || ''; frame.loading = 'lazy';
