@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0e14">
+  <meta name="description" content="Journal lokal pembelian akun prop firm, payout, dan ROI dalam USD.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <title>Propfolio — Journal Prop Firm</title>
+  <script defer src="core.js"></script>
+  <script defer src="storage.js"></script>
+  <script defer src="demo.js"></script>
+  <script defer src="view.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Lewati navigasi</a>
+  <noscript><p class="warning-note">Aktifkan JavaScript untuk membuka journal lokal ini.</p></noscript>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Navigasi utama">
+      <div class="brand"><div class="brand-mark" aria-hidden="true">P.</div><div class="brand-copy"><strong>propfolio<span class="brand-dot">.</span></strong><span>Your capital, accounted.</span></div></div>
+      <p class="nav-label">Workspace pribadi</p>
+      <nav class="main-nav">
+        <button class="nav-item active" data-nav="overview" title="Ringkasan"><span class="nav-icon" data-icon="grid"></span><span>Ringkasan</span></button>
+        <button class="nav-item" data-nav="accounts" title="Akun prop firm"><span class="nav-icon" data-icon="accounts"></span><span>Akun prop firm</span><span class="nav-count" id="account-count">0</span></button>
+        <button class="nav-item" data-nav="activity" title="Transaksi"><span class="nav-icon" data-icon="arrows"></span><span>Transaksi</span></button>
+        <button class="nav-item" data-nav="analytics" title="Analisis"><span class="nav-icon" data-icon="chart"></span><span>Analisis</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="storage-card"><div class="storage-title"><span>Hanya di perangkat ini</span><strong>LOKAL</strong></div><p>Catatan milikmu. Tanpa login, tanpa koneksi akun trading.</p><button class="btn btn-quiet btn-sm" data-action="export"><span data-icon="download"></span>Unduh backup</button></div>
+        <button class="nav-item" data-nav="settings" title="Pengaturan & backup"><span class="nav-icon" data-icon="settings"></span><span>Pengaturan & backup</span></button>
+        <div class="profile"><div class="avatar">A</div><div><strong>Journal pribadi</strong><span>USD · Manual input</span></div><span class="online-dot" title="Disimpan secara lokal"></span></div>
+      </div>
+    </aside>
+    <main class="main-content" id="main" tabindex="-1">
+      <div class="content-wrap">
+        <div class="mobile-header"><div class="brand"><div class="brand-mark">P.</div><strong>propfolio.</strong></div><label class="visually-hidden" for="mobile-nav">Buka halaman</label><select id="mobile-nav"><option value="overview">Ringkasan</option><option value="accounts">Akun prop firm</option><option value="activity">Transaksi</option><option value="analytics">Analisis</option><option value="settings">Backup & pengaturan</option></select></div>
+        <div class="workspace-bar"><span><span class="online-dot"></span> PERSONAL WORKSPACE <span class="workspace-divider">/</span> JOURNAL</span><span class="currency-tag">$ USD <span class="workspace-divider">·</span> <span id="today-label"></span></span></div>
+        <header class="topbar"><div><p class="eyebrow" id="page-eyebrow">Modal dicatat. Hasil terlihat.</p><h1 id="page-title">Ringkasan portofolio</h1><p class="page-intro" id="page-description">Satu tempat untuk biaya challenge, payout, dan hasil investasimu.</p></div><div class="actions"><button class="btn" data-action="payout"><span data-icon="arrow-down"></span>Catat payout</button><button class="btn btn-primary" data-action="account"><span data-icon="plus"></span>Tambah akun</button></div></header>
+        <div id="demo-banner" class="notice demo-notice" hidden><div><strong>MODE CONTOH</strong><span>Angka ilustrasi. Catatan aslimu tetap terpisah.</span></div><button class="btn btn-sm" data-action="demo-exit">Kembali ke data saya</button></div>
+        <div id="fatal-error" class="warning-note" role="alert" hidden></div>
+        <div id="loading" class="loading" role="status">Membuka journal lokal…</div>
+        <div id="app-content" hidden>
+          <section id="page-overview" class="page active" aria-label="Ringkasan"></section>
+          <section id="page-accounts" class="page" aria-label="Akun prop firm"></section>
+          <section id="page-activity" class="page" aria-label="Transaksi"></section>
+          <section id="page-analytics" class="page" aria-label="Analisis"></section>
+          <section id="page-settings" class="page" aria-label="Pengaturan dan backup"></section>
+        </div>
+        <footer class="app-footer"><span>PROP<span class="accent">FOLIO</span> <span class="workspace-divider">/</span> Catatan yang rapi, keputusan yang lebih jelas.</span><span id="save-status" role="status">Membuka penyimpanan…</span></footer>
+      </div>
+    </main>
+  </div>
+  <dialog id="editor" class="modal" aria-labelledby="modal-title">
+    <div class="modal-head"><div><p class="eyebrow">JOURNAL · USD</p><h2 id="modal-title"></h2><p id="modal-description"></p></div><button type="button" class="btn btn-quiet icon-btn" data-action="close" aria-label="Tutup formulir">×</button></div>
+    <form id="record-form" class="modal-body"><div class="form-grid" id="form-fields"></div><p class="form-error" id="form-error" role="alert" hidden></p><div class="form-footer"><button type="button" class="btn btn-quiet" data-action="close">Batal</button><button type="submit" class="btn btn-primary" id="save-record">Simpan catatan</button></div></form>
+  </dialog>
+  <dialog id="confirmation" class="modal confirm-modal" aria-labelledby="confirm-title"><div class="modal-body"><p class="eyebrow">KONFIRMASI</p><h2 id="confirm-title"></h2><p id="confirm-message"></p><p id="confirm-error" class="form-error" role="alert" hidden></p><div class="form-footer"><button class="btn btn-quiet" id="confirm-cancel">Batal</button><button class="btn btn-primary" id="confirm-ok">Lanjutkan</button></div></div></dialog>
+  <input id="import-file" type="file" accept=".json,application/json" hidden>
+  <div class="toast-region" id="toasts" role="status" aria-live="polite"></div>
+</body>
+</html>
