@@ -3,37 +3,51 @@
   "projects": [
     {
       "date": "2026-11-22",
-      "title": "[Video] MANSON — Blender 3D",
+      "title": "MANSON — Blender 3D",
+      "for": "MANSON",
+      "kind": "3D, Motion",
       "url": "https://portofolio-tawny-three-79.vercel.app/works/manson-blender.mp4"
     },
     {
       "date": "2026-11-22",
-      "title": "[Web] Héritiers du Vide",
+      "title": "Héritiers du Vide",
+      "for": "Héritiers du Vide",
+      "kind": "Website",
       "url": "https://x-official.vercel.app/"
     },
     {
       "date": "2026-01-23",
-      "title": "[Desain] Opening OldItsGold — Ticket",
+      "title": "Opening OldItsGold",
+      "for": "Studio Xryihs",
+      "kind": "Ticket, Identity",
       "url": "https://portofolio-tawny-three-79.vercel.app/works/olditsgold-ticket.png"
     },
     {
       "date": "2022-12-29",
-      "title": "[Desain] BASTARD — Butterfly",
+      "title": "BASTARD",
+      "for": "Studio Xryihs",
+      "kind": "Poster, Art Direction",
       "url": "https://portofolio-tawny-three-79.vercel.app/works/bastard-butterfly.jpg"
     },
     {
       "date": "2026-11-22",
-      "title": "[Desain] PARANOID INC. — Butterfly",
+      "title": "PARANOID INC.",
+      "for": "PARANOID INC.",
+      "kind": "Poster, Art Direction",
       "url": "https://portofolio-tawny-three-79.vercel.app/works/paranoid-butterfly.jpg"
     },
     {
       "date": "2026-11-22",
-      "title": "[Desain] STUDIO INBRAIN",
+      "title": "STUDIO INBRAIN",
+      "for": "STUDIO INBRAIN",
+      "kind": "Identity, Poster",
       "url": "https://portofolio-tawny-three-79.vercel.app/works/studio-inbrain.jpg"
     },
     {
       "date": "2013-10-11",
-      "title": "[Desain] EXTRAWELT — Poster",
+      "title": "EXTRAWELT",
+      "for": "Dachstock Bern",
+      "kind": "Poster",
       "url": "https://portofolio-tawny-three-79.vercel.app/works/extrawelt-poster.jpg"
     }
   ],
