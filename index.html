@@ -4,124 +4,256 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Adrian Fikri Fahrezi</title>
-<meta name="description" content="Portofolio Adrian Fikri Fahrezi">
-<meta name="theme-color" content="#000000">
+<meta name="description" content="Portofolio Adrian Fikri Fahrezi — desain grafis, 3D, UI & web.">
+<meta name="theme-color" content="#0f0e0c">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#000; --fg:#fff; }
+  /* ---------- Special Offer style: grotesk, ruang kosong, blok warna datar ---------- */
+  :root {
+    --so-black:#0f0e0c; --so-bone:#c7c1b4; --so-white:#fff;
+    --so-red:#e50000; --so-blue:#4178ff; --so-lime:#00b800; --so-yellow:#ffbb00;
+    --ink:#0f0e0c; --paper:#c7c1b4;
+  }
   * { box-sizing:border-box; margin:0; padding:0; }
-  html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--fg); }
+  html, body { height:100%; background:var(--so-black); color:var(--so-bone); }
   body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 13px; letter-spacing: .02em;
-    height:100dvh;
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size:16px; line-height:1.5; letter-spacing:-.01em;
+    overflow:hidden; height:100dvh;
+  }
+  .display, .detail-title, .archive-intro, .info-head, .info-sub {
+    font-family:"Archivo Narrow", "HelveticaNeue-CondensedBold", "Arial Narrow", sans-serif;
+    font-weight:700; letter-spacing:-.01em; line-height:.95; text-transform:uppercase;
   }
   a, button { color:inherit; font:inherit; letter-spacing:inherit; background:none; border:0; cursor:pointer; text-decoration:none; }
-  a:focus-visible, button:focus-visible { outline:1px solid var(--fg); outline-offset:4px; }
+  a:focus-visible, button:focus-visible { outline:1px solid currentColor; outline-offset:4px; }
+  ::selection { background:var(--so-blue); color:#000; }
 
+  /* ---------- Loader ---------- */
+  #loader {
+    position:fixed; inset:0; z-index:100; background:var(--so-red); color:#f0f;
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    font-size:13px; letter-spacing:.06em; line-height:1.6;
+    transition:opacity .5s ease; pointer-events:none;
+  }
+  #loader.done { opacity:0; }
+
+  /* ---------- Header ---------- */
   header {
-    position:fixed; top:0; left:0; right:0; z-index:20; mix-blend-mode:difference;
-    display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
-    padding:calc(18px + env(safe-area-inset-top)) 20px 18px;
+    position:fixed; top:0; left:0; right:0; z-index:60; mix-blend-mode:difference;
+    display:grid; grid-template-columns:1fr auto 1fr; align-items:start;
+    padding:calc(28px + env(safe-area-inset-top)) 32px 0; color:#fff;
+    font-size:15px; font-weight:500;
   }
-  .name { justify-self:start; }
-  .project { justify-self:center; }
-  .info { justify-self:end; animation: blink 1.2s steps(1,end) infinite; }
-  .info[aria-expanded="true"], .info:hover { animation:none; }
-  @keyframes blink { 0%,60% {opacity:1} 61%,100% {opacity:.15} }
+  header .name { justify-self:start; font-weight:700; text-align:left; }
+  header .archive-btn { justify-self:center; }
+  header .info-btn { justify-self:end; }
+  header button:hover, header a:hover { text-decoration:underline; }
 
-  main { position:fixed; inset:0; }
-  video { width:100%; height:100%; object-fit:cover; display:block; background:#000; }
+  /* ---------- Hero / featured carousel ---------- */
+  #hero { position:fixed; inset:0; z-index:1; background:var(--so-black); overflow:hidden; cursor:pointer; }
+  .slide { position:absolute; inset:0; display:none; }
+  .slide.active { display:block; }
+  .slide img, .slide video { width:100%; height:100%; object-fit:cover; display:block; background:#000; }
+  .slide.text-slide { display:none; align-items:center; justify-content:center; padding:80px 32px; text-align:center; }
+  .slide.text-slide.active { display:flex; }
+  .slide.text-slide .display { font-size:clamp(56px, 10vw, 150px); }
+  .slide.text-slide.bg-white { background:#fff; color:#000; }
+  .slide.text-slide.bg-blue { background:var(--so-blue); color:#000; }
+  .slide.text-slide.bg-bone { background:var(--so-bone); color:#000; }
+  .slide.text-slide.bg-red { background:var(--so-red); color:#fff; }
+  .hero-caption {
+    position:absolute; left:32px; bottom:calc(28px + env(safe-area-inset-bottom)); z-index:5;
+    font-size:17px; font-weight:500; color:#fff; mix-blend-mode:difference; cursor:pointer;
+  }
+  .hero-caption:hover { text-decoration:underline; }
+  .hero-contact {
+    position:absolute; right:32px; bottom:calc(28px + env(safe-area-inset-bottom)); z-index:5;
+    font-size:17px; font-weight:700; color:#fff; mix-blend-mode:difference;
+  }
+  .hero-contact:hover { text-decoration:underline; }
+  .hero-progress { position:absolute; left:0; right:0; bottom:0; height:2px; z-index:5; background:transparent; }
+  .hero-progress span { display:block; height:100%; width:0; background:var(--so-bone); }
+  .hero-progress span.run { transition:width 7s linear; width:100%; }
+  .hero-side {
+    position:absolute; left:0; top:50%; transform:translateY(-50%) rotate(180deg);
+    writing-mode:vertical-rl; z-index:5; font-size:11px; letter-spacing:.08em;
+    color:#fff; mix-blend-mode:difference; white-space:nowrap;
+  }
 
-  footer { position:fixed; left:0; right:0; bottom:0; z-index:20; mix-blend-mode:difference; padding:18px 20px calc(18px + env(safe-area-inset-bottom)); text-align:center; }
-
+  /* ---------- Panels ---------- */
   .panel {
-    position:fixed; inset:0; z-index:10; background:var(--bg);
-    display:none; padding: calc(env(safe-area-inset-top) + 64px) 20px calc(env(safe-area-inset-bottom) + 64px);
-    overflow:auto;
+    position:fixed; inset:0; z-index:40; display:none; overflow-y:auto; overflow-x:hidden;
+    padding:calc(96px + env(safe-area-inset-top)) 0 calc(48px + env(safe-area-inset-bottom));
+    -webkit-overflow-scrolling:touch;
   }
-  #project.panel { padding-left:20px; padding-right:20px; }
-  .panel.open { display:flex; }
-  .panel .inner {
-    margin:auto; width:100%; max-width:520px;
-    text-align:center; font-weight:700; font-size:16px; line-height:1.6;
+  .panel.open { display:block; }
+  .panel .inner { width:100%; }
+  #project.panel, #detail.panel { background:var(--so-black); color:var(--so-bone); }
+  #contact.panel { background:var(--so-lime); color:#000; }
+
+  /* ---------- Archive ---------- */
+  .archive-intro {
+    text-align:center; font-size:clamp(34px, 5.4vw, 76px); font-weight:600;
+    line-height:1.05; padding:24px 32px 56px; text-transform:none; letter-spacing:-.02em;
   }
-  #project .inner { max-width:none; width:100%; margin:0; text-align:left; }
-  .archive-wrap { overflow-x:auto; }
-  table.archive { width:100%; border-collapse:collapse; font-size:16px; line-height:1.5; }
-  table.archive th, table.archive td { text-align:left; padding:14px 12px; border-bottom:1px solid #333; vertical-align:top; }
-  table.archive th { font-size:13px; opacity:.6; font-weight:700; }
+  .archive-intro button:hover { color:var(--so-blue); }
+  .archive-intro .all { font-size:.45em; vertical-align:middle; text-decoration:underline; }
+  .archive-wrap { padding:0 32px; }
+  table.archive { width:100%; border-collapse:collapse; font-size:18px; line-height:1.4; font-weight:500; }
+  table.archive th, table.archive td { text-align:left; padding:12px 12px; border-bottom:1px solid #3a382f; vertical-align:top; }
+  table.archive th { font-size:15px; font-weight:500; }
+  table.archive th button:hover { text-decoration:underline; }
   table.archive td.yr { white-space:nowrap; }
-  table.archive a { border-bottom:1px solid var(--fg); }
-  @media (max-width:640px) {
-    table.archive { font-size:14px; }
-    table.archive th:nth-child(4), table.archive td:nth-child(4) { display:none; }
+  table.archive tbody tr:hover { background:#1b1a17; }
+  table.archive tbody tr:hover .detail-link { color:#fff; }
+  button.detail-link { text-align:left; }
+  button.detail-link:hover { color:#fff; text-decoration:underline; }
+  .archive-foot {
+    display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    border-top:1px solid #3a382f; margin:64px 32px 0; padding:20px 0 8px; font-size:14px;
   }
-  #detail .inner { max-width:none; width:100%; margin:0; text-align:left; }
-  .detail-top { display:flex; justify-content:space-between; padding:0 20px; font-size:13px; opacity:.85; }
-  .detail-title { font-size:clamp(48px, 8vw, 96px); line-height:1.05; text-align:center; font-weight:700; margin:48px 0 64px; }
-  .detail-meta { display:grid; grid-template-columns:1fr 220px 100px; gap:24px; padding:0 20px 48px; }
-  .detail-meta h3 { font-size:13px; opacity:.6; margin-bottom:12px; }
-  .detail-meta p { font-size:16px; line-height:1.6; white-space:pre-line; }
-  .detail-media { padding:0 20px 40px; }
+  .archive-foot a:hover, .archive-foot button:hover { text-decoration:underline; }
+
+  /* ---------- Detail ---------- */
+  .detail-top { display:flex; justify-content:space-between; padding:0 32px; font-size:15px; }
+  .detail-top button:hover { text-decoration:underline; }
+  .detail-title {
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif; text-transform:none;
+    font-size:clamp(56px, 9vw, 110px); line-height:1; letter-spacing:-.02em;
+    text-align:center; font-weight:500; margin:72px 32px 80px; color:var(--so-bone);
+  }
+  .detail-title div + div { margin-top:0; }
+  .detail-meta {
+    display:grid; grid-template-columns:1.6fr 1fr 1fr 120px; gap:32px;
+    padding:0 32px 64px; border-top:1px solid #3a382f; padding-top:20px;
+  }
+  .detail-meta h3 { font-size:15px; font-weight:500; margin-bottom:10px; }
+  .detail-meta p { font-size:19px; line-height:1.45; font-weight:500; white-space:pre-line; }
+  .detail-meta .yr { text-align:right; }
+  .detail-media { padding:0 64px 24px; }
+  .detail-media figure { margin-bottom:48px; }
   .detail-media img, .detail-media video { width:100%; display:block; background:#000; }
   .detail-media iframe { width:100%; height:100vh; border:0; display:block; background:#fff; }
-  .detail-media a { border-bottom:1px solid var(--fg); }
-  button.detail-link { text-align:left; border-bottom:1px solid var(--fg); }
-  @media (max-width:640px) {
-    .detail-meta { grid-template-columns:1fr 1fr; }
-    .detail-title { margin:32px 0 40px; }
-  }
-  .row + .row { margin-top:14px; }
-  .row .d { margin-right:.7em; }
-  .panel a { border-bottom:1px solid var(--fg); }
-  .info-text { white-space:pre-line; }
+  .detail-media figcaption { font-size:14px; margin-top:10px; opacity:.75; }
+  .detail-media a { border-bottom:1px solid currentColor; }
+  .detail-media .open-link { margin-top:16px; font-size:16px; }
+  .detail-media .open-link a:hover { color:#fff; }
+  .detail-archive { margin-top:64px; }
+  .detail-archive h2 { font-size:15px; font-weight:500; padding:0 32px 8px; }
 
-  @media (prefers-reduced-motion: reduce) { .info { animation:none; } }
+  /* ---------- Info panel (merah, ala SO) ---------- */
+  #info.panel { background:var(--so-red); color:#fff; padding:0; }
+  #info .info-split { display:grid; grid-template-columns:45% 55%; min-height:100%; }
+  .info-left { position:sticky; top:0; height:100dvh; overflow:hidden; }
+  .info-left video, .info-left img { width:100%; height:100%; object-fit:cover; display:block; }
+  .info-right { padding:calc(96px + env(safe-area-inset-top)) 40px 48px; }
+  .info-close { font-size:15px; font-weight:700; margin-bottom:48px; display:block; }
+  .info-close:hover { text-decoration:underline; }
+  .info-head { font-size:clamp(44px, 5.2vw, 84px); color:#fff; margin-bottom:40px; }
+  .info-sub { font-size:clamp(26px, 2.6vw, 40px); color:var(--so-yellow); margin-bottom:48px; }
+  .info-block { border-top:1px solid #000; padding:20px 0 32px; }
+  .info-block h3 { font-size:13px; letter-spacing:.08em; text-transform:uppercase; margin-bottom:14px; color:#000; font-weight:700; }
+  .info-block p { font-size:19px; line-height:1.5; font-weight:500; color:#fff; white-space:pre-line; }
+  .info-cols { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  .info-cols ul { list-style:none; }
+  .info-cols li { font-size:17px; line-height:1.6; font-weight:500; }
+  .info-cols li button:hover { text-decoration:underline; }
+  .info-block a { border-bottom:1px solid #fff; }
+  .info-block a:hover { color:var(--so-yellow); border-color:var(--so-yellow); }
+  .info-cta {
+    display:inline-block; background:var(--so-blue); color:#000; font-weight:700;
+    padding:14px 28px; margin-top:8px; font-size:17px; border:0;
+  }
+  .info-cta:hover { background:#fff; }
+  .info-foot { margin-top:56px; border-top:1px solid #000; padding-top:24px; }
+  .info-foot .display { font-size:clamp(30px, 3.4vw, 52px); color:#000; }
+  .info-foot p { font-size:14px; margin-top:16px; color:#000; }
+
+  /* ---------- Contact panel (lime) ---------- */
+  #contact .inner { padding:0 32px; }
+  #contact h2 { font-size:clamp(48px, 8vw, 110px); line-height:.95; margin-bottom:48px; }
+  #contact .contact-rows { border-top:1px solid #000; }
+  #contact .contact-rows a, #contact .contact-rows span {
+    display:block; font-size:clamp(24px, 3.4vw, 44px); font-weight:500; letter-spacing:-.02em;
+    padding:20px 0; border-bottom:1px solid #000;
+  }
+  #contact .contact-rows a:hover { padding-left:12px; }
+  #contact .contact-close { display:block; margin-bottom:40px; font-weight:700; font-size:15px; }
+  #contact .contact-close:hover { text-decoration:underline; }
+
+  @media (max-width:900px) {
+    header { padding-left:20px; padding-right:20px; font-size:14px; }
+    .hero-caption { left:20px; font-size:15px; }
+    .hero-contact { right:20px; font-size:15px; }
+    .archive-intro { padding:16px 20px 40px; }
+    .archive-wrap { padding:0 20px; }
+    table.archive { font-size:15px; }
+    table.archive th:nth-child(4), table.archive td:nth-child(4) { display:none; }
+    .detail-top { padding:0 20px; }
+    .detail-title { margin:48px 20px 56px; }
+    .detail-meta { grid-template-columns:1fr 1fr; gap:24px; padding:0 20px 48px; }
+    .detail-meta .yr { text-align:left; }
+    .detail-media { padding:0 20px 16px; }
+    .detail-media figure { margin-bottom:32px; }
+    #info .info-split { grid-template-columns:1fr; }
+    .info-left { display:none; }
+    .info-right { padding:calc(88px + env(safe-area-inset-top)) 20px 40px; }
+    .archive-foot { margin:48px 20px 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-progress span.run { transition:none; }
+  }
 </style>
 </head>
 <body>
 
+<div id="loader" aria-hidden="true"><div>ADRIAN FIKRI FAHREZI<br>PORTFOLIO</div></div>
+
 <header>
   <a class="name" href="#" data-close>Adrian Fikri Fahrezi</a>
-  <button class="project" data-open="project" aria-expanded="false">Project</button>
-  <button class="info" data-open="info" aria-expanded="false">Info</button>
+  <button class="archive-btn" data-open="project" aria-expanded="false">Project Archive</button>
+  <button class="info-btn" data-open="info" aria-expanded="false">Information</button>
 </header>
 
-<main>
-  <video src="video.mp4" autoplay muted loop playsinline preload="auto"></video>
+<main id="hero" aria-label="Featured work">
+  <div id="slides"></div>
+  <div class="hero-side" id="hero-side"></div>
+  <button class="hero-caption" id="hero-caption" type="button"></button>
+  <button class="hero-contact" id="hero-contact" data-open="contact" type="button">Contact</button>
+  <div class="hero-progress"><span id="hero-progress"></span></div>
 </main>
 
-<footer>
-  <button data-open="contact" aria-expanded="false">Contact</button>
-</footer>
-
-<section class="panel" id="project" aria-label="Project"><div class="inner"></div></section>
+<section class="panel" id="project" aria-label="Project Archive"><div class="inner"></div></section>
 <section class="panel" id="detail" aria-label="Detail"><div class="inner detail-inner"></div></section>
-<section class="panel" id="info" aria-label="Info"><div class="inner info-text"></div></section>
+<section class="panel" id="info" aria-label="Information"><div class="inner"></div></section>
 <section class="panel" id="contact" aria-label="Contact"><div class="inner"></div></section>
 
 <script>
-  /* ---------- Konten ---------- */
+  /* ---------- Konten (dari content.json, fallback bila gagal dimuat) ---------- */
   const DEFAULT = {
     name: "Adrian Fikri Fahrezi",
     projects: [
-      { date: "2026-11-22", title: "MANSON — Blender 3D", for: "MANSON", kind: "3D, Motion", url: "" },
-      { date: "2026-11-22", title: "Héritiers du Vide", for: "Héritiers du Vide", kind: "Website", url: "" }
+      { date: "2026-11-22", title: "MANSON — Blender 3D", for: "MANSON", kind: "3D, Motion", url: "works/manson-blender.mp4" },
+      { date: "2026-11-22", title: "Héritiers du Vide", for: "Héritiers du Vide", kind: "Website", url: "https://x-official.vercel.app/" }
     ],
-    info: "Tulis deskripsi singkat tentang dirimu di sini.",
+    info: "Mahasiswa S1 Desain Komunikasi Visual.",
     contacts: [
-      { label: "emailkamu@gmail.com", url: "mailto:emailkamu@gmail.com" },
-      { label: "Instagram", url: "https://instagram.com/usernamekamu" },
-      { label: "WhatsApp", url: "https://wa.me/628123456789" }
+      { label: "booiyk1@gmail.com", url: "mailto:booiyk1@gmail.com" },
+      { label: "LinkedIn", url: "https://www.linkedin.com/in/adrianfikri/" }
     ]
   };
-  const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  const FEATURED_TITLES = [
+    "MANSON — Blender 3D",
+    "BASTARD",
+    "Google Card Review — Landing Page",
+    "EXTRAWELT",
+    "Héritiers du Vide"
+  ];
+  const TEXT_SLIDE_BGS = ["bg-white", "bg-blue", "bg-bone", "bg-red"];
 
-  function formatDate(iso) {
-    const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || '');
-    if (!m) return '';
-    return m[3] + (MONTHS[parseInt(m[2], 10) - 1] || '');
-  }
   function safeUrl(u) {
     u = (u || '').trim();
     if (!u) return '';
@@ -136,83 +268,170 @@
     if (/^https?:/i.test(url)) { a.target = '_blank'; a.rel = 'noopener'; }
     return a;
   }
-  function render(c) {
-    const name = c.name || DEFAULT.name;
-    document.querySelector('.name').textContent = name;
-    document.title = name;
+  function yearOf(p) { return String(p.date || '').slice(0, 4); }
+  /* Judul detail: jangan double kalau sudah diawali For (berlaku semua project). */
+  function detailTitleLines(p) {
+    const forText = String(p['for'] || '').trim();
+    const titleText = String(p.title || '').trim();
+    const firstWord = forText.split(/\s+/)[0] || '';
+    const dup = forText !== '' && (
+      titleText.toLowerCase().startsWith(forText.toLowerCase()) ||
+      (firstWord !== '' && titleText.toLowerCase().startsWith(firstWord.toLowerCase()))
+    );
+    return dup ? [titleText] : [forText, titleText].filter(Boolean);
+  }
 
-    const pl = document.querySelector('#project .inner');
-    pl.textContent = '';
+  let currentProjects = [];
+  let slideIndex = 0;
+  let slideTimer = null;
+
+  /* ---------- Hero carousel ---------- */
+  function featuredProjects() {
+    const byTitle = {};
+    currentProjects.forEach(p => { byTitle[p.title] = p; });
+    const picked = FEATURED_TITLES.map(t => byTitle[t]).filter(Boolean);
+    const rest = currentProjects.filter(p => !picked.includes(p));
+    return picked.concat(rest).slice(0, 5);
+  }
+  function buildSlides() {
+    const box = document.getElementById('slides');
+    box.textContent = '';
+    const feats = featuredProjects();
+    feats.forEach((p, i) => {
+      const s = document.createElement('div');
+      s.className = 'slide';
+      s.dataset.index = i;
+      const url = safeUrl(p.url);
+      if (url && /\.mp4$/i.test(url)) {
+        const v = document.createElement('video');
+        v.src = url; v.muted = true; v.loop = true; v.playsInline = true; v.autoplay = true;
+        s.appendChild(v);
+      } else if (url && /\.(jpg|jpeg|png|gif|webp)$/i.test(url)) {
+        const img = document.createElement('img');
+        img.src = url; img.alt = p.title || '';
+        s.appendChild(img);
+      } else {
+        s.classList.add('text-slide', TEXT_SLIDE_BGS[i % TEXT_SLIDE_BGS.length]);
+        const t = document.createElement('div');
+        t.className = 'display';
+        t.textContent = detailTitleLines(p).join(' — ');
+        s.appendChild(t);
+      }
+      box.appendChild(s);
+    });
+    showSlide(0);
+  }
+  function showSlide(i) {
+    const slides = [...document.querySelectorAll('#slides .slide')];
+    if (!slides.length) return;
+    slideIndex = ((i % slides.length) + slides.length) % slides.length;
+    slides.forEach((s, k) => s.classList.toggle('active', k === slideIndex));
+    const p = featuredProjects()[slideIndex];
+    const cap = document.getElementById('hero-caption');
+    cap.textContent = p ? ((p['for'] ? p['for'] + ' — ' : '') + (p.title || '')) : '';
+    cap.onclick = (e) => { e.stopPropagation(); if (p) showDetail(p); };
+    document.getElementById('hero-side').textContent = p ? (p.title || '') : '';
+    const bar = document.getElementById('hero-progress');
+    bar.classList.remove('run');
+    void bar.offsetWidth;
+    bar.classList.add('run');
+    clearTimeout(slideTimer);
+    slideTimer = setTimeout(() => showSlide(slideIndex + 1), 7000);
+  }
+
+  /* ---------- Tabel arsip (dipakai di panel Project & di bawah detail) ---------- */
+  function archiveTable(list) {
     const wrap = document.createElement('div');
     wrap.className = 'archive-wrap';
     const table = document.createElement('table');
     table.className = 'archive';
     const thead = document.createElement('thead');
-    thead.innerHTML = '<tr><th>Yr.</th><th>For</th><th>Project</th><th>Kind</th></tr>';
-    table.appendChild(thead);
+    const trh = document.createElement('tr');
+    const thYr = document.createElement('th');
+    const yrBtn = document.createElement('button');
+    yrBtn.textContent = '↓ Yr.';
+    yrBtn.addEventListener('click', () => {
+      const desc = yrBtn.textContent.startsWith('↓');
+      yrBtn.textContent = desc ? '↑ Yr.' : '↓ Yr.';
+      renderArchive(list, !desc);
+    });
+    thYr.appendChild(yrBtn); trh.appendChild(thYr);
+    ['For', 'Project', 'Kind'].forEach(h => {
+      const th = document.createElement('th'); th.textContent = h; trh.appendChild(th);
+    });
+    thead.appendChild(trh); table.appendChild(thead);
     const tbody = document.createElement('tbody');
-    currentProjects = [...(c.projects || [])].sort((a, b) => String(b.date).localeCompare(String(a.date)));
-    currentProjects
-      .forEach(p => {
-        const tr = document.createElement('tr');
-        const yr = document.createElement('td'); yr.className = 'yr'; yr.textContent = String(p.date || '').slice(0, 4); tr.appendChild(yr);
-        const f = document.createElement('td'); f.textContent = p.for || ''; tr.appendChild(f);
-        const proj = document.createElement('td');
-        const b = document.createElement('button');
-        b.className = 'detail-link'; b.textContent = p.title || '';
-        b.addEventListener('click', () => showDetail(p));
-        proj.appendChild(b);
-        tr.appendChild(proj);
-        const k = document.createElement('td'); k.textContent = p.kind || ''; tr.appendChild(k);
-        tbody.appendChild(tr);
-      });
+    list.forEach(p => {
+      const tr = document.createElement('tr');
+      const yr = document.createElement('td'); yr.className = 'yr'; yr.textContent = yearOf(p); tr.appendChild(yr);
+      const f = document.createElement('td'); f.textContent = p['for'] || ''; tr.appendChild(f);
+      const proj = document.createElement('td');
+      const b = document.createElement('button');
+      b.className = 'detail-link'; b.textContent = p.title || '';
+      b.addEventListener('click', () => showDetail(p));
+      proj.appendChild(b); tr.appendChild(proj);
+      const k = document.createElement('td'); k.textContent = p.kind || ''; tr.appendChild(k);
+      tbody.appendChild(tr);
+    });
     table.appendChild(tbody);
     wrap.appendChild(table);
-    pl.appendChild(wrap);
-
-    document.querySelector('#info .inner').textContent = c.info || '';
-
-    const cl = document.querySelector('#contact .inner');
-    cl.textContent = '';
-    (c.contacts || []).forEach(k => {
-      const row = document.createElement('div');
-      row.className = 'row';
-      const url = safeUrl(k.url);
-      if (url) row.appendChild(makeLink(k.label || '', url));
-      else row.appendChild(document.createTextNode(k.label || ''));
-      cl.appendChild(row);
+    return wrap;
+  }
+  function renderArchive(list, desc) {
+    const sorted = [...list].sort((a, b) => desc
+      ? String(b.date).localeCompare(String(a.date))
+      : String(a.date).localeCompare(String(b.date)));
+    const pl = document.querySelector('#project .inner');
+    pl.textContent = '';
+    const intro = document.createElement('div');
+    intro.className = 'archive-intro';
+    const clients = [...new Set(currentProjects.map(p => (p['for'] || '').trim()).filter(Boolean))];
+    clients.forEach((c, i) => {
+      const b = document.createElement('button');
+      b.textContent = c;
+      b.addEventListener('click', () => renderArchive(currentProjects.filter(p => (p['for'] || '').trim() === c), true));
+      intro.appendChild(b);
+      if (i < clients.length - 1) intro.appendChild(document.createTextNode(', '));
     });
+    if (list.length !== currentProjects.length) {
+      intro.appendChild(document.createTextNode(' '));
+      const all = document.createElement('button');
+      all.className = 'all'; all.textContent = '(All)';
+      all.addEventListener('click', () => renderArchive(currentProjects, true));
+      intro.appendChild(all);
+    }
+    pl.appendChild(intro);
+    pl.appendChild(archiveTable(sorted));
+    const foot = document.createElement('div');
+    foot.className = 'archive-foot';
+    const left = document.createElement('div');
+    left.appendChild(makeLink('Contact', 'mailto:booiyk1@gmail.com'));
+    left.appendChild(document.createTextNode(', '));
+    left.appendChild(makeLink('LinkedIn', 'https://www.linkedin.com/in/adrianfikri/'));
+    const right = document.createElement('div');
+    right.textContent = '© 2021 – 26, All Rights Reserved.';
+    foot.appendChild(left); foot.appendChild(right);
+    pl.appendChild(foot);
   }
 
-  let currentProjects = [];
-
+  /* ---------- Detail project ---------- */
   function showDetail(p) {
     const el = document.querySelector('#detail .inner');
     el.textContent = '';
     const top = document.createElement('div'); top.className = 'detail-top';
-    const back = document.createElement('button'); back.textContent = 'Adrian Fikri Fahrezi — ' + (p.title || '');
-    back.addEventListener('click', () => { closeAll(); document.getElementById('project').classList.add('open'); });
+    const back = document.createElement('button');
+    back.textContent = 'Adrian Fikri Fahrezi — ' + (p.title || '');
+    back.addEventListener('click', () => { closeAll(); openPanel('project'); });
     const arch = document.createElement('button'); arch.textContent = 'Project Archive';
-    arch.addEventListener('click', () => { closeAll(); document.getElementById('project').classList.add('open'); });
+    arch.addEventListener('click', () => { closeAll(); openPanel('project'); });
     top.appendChild(back); top.appendChild(arch); el.appendChild(top);
+
     const h = document.createElement('h1'); h.className = 'detail-title';
-    h.innerHTML = '';
-    /* Jangan double: kalau judul sudah diawali nama For (mis. judul
-       "Google Card Review — Landing Page" dengan For "Google Card Review"),
-       tampilkan judulnya saja. Baris For hanya ditampilkan kalau judul
-       tidak diawali For / kata pertama For (mis. For "Studio Xryihs"
-       dengan judul "Opening OldItsGold"). Berlaku untuk semua project. */
-    const forText = String(p['for'] || '').trim();
-    const titleText = String(p.title || '').trim();
-    const firstWord = forText.split(/\s+/)[0] || '';
-    const startsWithFor = forText !== '' && titleText.toLowerCase().startsWith(forText.toLowerCase());
-    const startsWithFirstWord = firstWord !== '' && titleText.toLowerCase().startsWith(firstWord.toLowerCase());
-    if (forText !== '' && !startsWithFor && !startsWithFirstWord) {
-      const f1 = document.createElement('div'); f1.textContent = forText;
-      h.appendChild(f1);
-    }
-    const t1 = document.createElement('div'); t1.textContent = titleText;
-    h.appendChild(t1); el.appendChild(h);
+    detailTitleLines(p).forEach(line => {
+      const d = document.createElement('div'); d.textContent = line; h.appendChild(d);
+    });
+    el.appendChild(h);
+
     const meta = document.createElement('div'); meta.className = 'detail-meta';
     const about = document.createElement('div');
     about.innerHTML = '<h3>About</h3>';
@@ -220,82 +439,201 @@
     const kind = document.createElement('div');
     kind.innerHTML = '<h3>Kind</h3>';
     const kp = document.createElement('p'); kp.textContent = (p.kind || '').split(',').map(x => x.trim()).join('\n'); kind.appendChild(kp); meta.appendChild(kind);
-    const yr = document.createElement('div');
+    const forc = document.createElement('div');
+    forc.innerHTML = '<h3>For</h3>';
+    const fp = document.createElement('p'); fp.textContent = p['for'] || '—'; forc.appendChild(fp); meta.appendChild(forc);
+    const yr = document.createElement('div'); yr.className = 'yr';
     yr.innerHTML = '<h3>Yr.</h3>';
-    const yp = document.createElement('p'); yp.textContent = String(p.date || '').slice(0, 4); yr.appendChild(yp); meta.appendChild(yr);
+    const yp = document.createElement('p'); yp.textContent = yearOf(p); yr.appendChild(yp); meta.appendChild(yr);
     el.appendChild(meta);
+
     const media = document.createElement('div'); media.className = 'detail-media';
     const url = safeUrl(p.url);
     if (url && /\.(jpg|jpeg|png|gif|webp)$/i.test(url)) {
-      const img = document.createElement('img'); img.src = url; img.alt = p.title || ''; media.appendChild(img);
+      const fig = document.createElement('figure');
+      const img = document.createElement('img'); img.src = url; img.alt = p.title || '';
+      fig.appendChild(img);
+      const cap = document.createElement('figcaption'); cap.textContent = p.title || ''; fig.appendChild(cap);
+      media.appendChild(fig);
     } else if (url && /\.mp4$/i.test(url)) {
-      const v = document.createElement('video'); v.src = url; v.controls = true; v.autoplay = true; v.muted = true; v.loop = true; v.playsInline = true; media.appendChild(v);
+      const fig = document.createElement('figure');
+      const v = document.createElement('video'); v.src = url; v.controls = true; v.autoplay = true; v.muted = true; v.loop = true; v.playsInline = true;
+      fig.appendChild(v);
+      const cap = document.createElement('figcaption'); cap.textContent = p.title || ''; fig.appendChild(cap);
+      media.appendChild(fig);
     } else if (url && /\.pdf$/i.test(url)) {
       const frame = document.createElement('iframe');
       frame.src = url; frame.title = p.title || ''; frame.loading = 'lazy';
       media.appendChild(frame);
-      const open = document.createElement('div');
-      open.style.marginTop = '16px';
+      const open = document.createElement('div'); open.className = 'open-link';
       open.appendChild(makeLink('Buka Sertifikat (PDF)', url));
       media.appendChild(open);
     } else if (url) {
       const frame = document.createElement('iframe');
       frame.src = url; frame.title = p.title || ''; frame.loading = 'lazy';
       media.appendChild(frame);
-      const open = document.createElement('div');
-      open.style.marginTop = '16px';
+      const open = document.createElement('div'); open.className = 'open-link';
       open.appendChild(makeLink('Buka Website di tab baru', url));
       media.appendChild(open);
     }
     el.appendChild(media);
-    const archWrap = document.createElement('div');
-    archWrap.className = 'archive-wrap';
-    archWrap.style.marginTop = '64px';
-    const atable = document.createElement('table');
-    atable.className = 'archive';
-    const athead = document.createElement('thead');
-    athead.innerHTML = '<tr><th>Yr.</th><th>For</th><th>Project</th><th>Kind</th></tr>';
-    atable.appendChild(athead);
-    const atbody = document.createElement('tbody');
-    (currentProjects || []).forEach(p2 => {
-      const tr = document.createElement('tr');
-      const yr = document.createElement('td'); yr.className = 'yr'; yr.textContent = String(p2.date || '').slice(0, 4); tr.appendChild(yr);
-      const f = document.createElement('td'); f.textContent = p2['for'] || ''; tr.appendChild(f);
-      const proj = document.createElement('td');
-      const b2 = document.createElement('button'); b2.className = 'detail-link'; b2.textContent = p2.title || '';
-      b2.addEventListener('click', () => showDetail(p2));
-      proj.appendChild(b2); tr.appendChild(proj);
-      const k = document.createElement('td'); k.textContent = p2.kind || ''; tr.appendChild(k);
-      atbody.appendChild(tr);
-    });
-    atable.appendChild(atbody);
-    archWrap.appendChild(atable);
-    el.appendChild(archWrap);
+
+    const da = document.createElement('div'); da.className = 'detail-archive';
+    const dh = document.createElement('h2'); dh.textContent = 'Project Archive'; da.appendChild(dh);
+    const sorted = [...currentProjects].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+    da.appendChild(archiveTable(sorted));
+    el.appendChild(da);
+
     closeAll();
     document.getElementById('detail').classList.add('open');
+    document.getElementById('detail').scrollTop = 0;
     window.scrollTo(0, 0);
   }
+
+  /* ---------- Info & Contact ---------- */
+  function renderInfo(c) {
+    const el = document.querySelector('#info .inner');
+    el.textContent = '';
+    const split = document.createElement('div'); split.className = 'info-split';
+    const left = document.createElement('div'); left.className = 'info-left';
+    const v = document.createElement('video');
+    v.src = 'video.mp4'; v.autoplay = true; v.muted = true; v.loop = true; v.playsInline = true;
+    left.appendChild(v);
+    split.appendChild(left);
+    const right = document.createElement('div'); right.className = 'info-right';
+    const close = document.createElement('button');
+    close.className = 'info-close'; close.textContent = 'Close';
+    close.addEventListener('click', closeAll);
+    right.appendChild(close);
+    const head = document.createElement('div');
+    head.className = 'info-head';
+    head.textContent = 'Designer, 3D Artist & Trader';
+    right.appendChild(head);
+    const sub = document.createElement('div');
+    sub.className = 'info-sub';
+    sub.textContent = 'Desain Grafis, 3D, UI & Web';
+    right.appendChild(sub);
+
+    const about = document.createElement('div'); about.className = 'info-block';
+    about.innerHTML = '<h3>About</h3>';
+    const ap = document.createElement('p'); ap.textContent = c.info || ''; about.appendChild(ap);
+    right.appendChild(about);
+
+    const tools = document.createElement('div'); tools.className = 'info-block';
+    tools.innerHTML = '<h3>Tools</h3>';
+    const tp = document.createElement('p');
+    tp.textContent = 'Figma, Blender, Adobe Illustrator, Adobe Photoshop, Canva';
+    tools.appendChild(tp);
+    right.appendChild(tools);
+
+    const clients = document.createElement('div'); clients.className = 'info-block';
+    clients.innerHTML = '<h3>Selected Clients & Work</h3>';
+    const cols = document.createElement('div'); cols.className = 'info-cols';
+    const ul = document.createElement('ul');
+    [...new Set(currentProjects.map(p => (p['for'] || '').trim()).filter(Boolean))].forEach(name => {
+      const li = document.createElement('li');
+      const b = document.createElement('button');
+      b.textContent = name;
+      b.addEventListener('click', () => {
+        closeAll();
+        renderArchive(currentProjects.filter(p => (p['for'] || '').trim() === name), true);
+        openPanel('project');
+      });
+      li.appendChild(b); ul.appendChild(li);
+    });
+    cols.appendChild(ul);
+    const ul2 = document.createElement('ul');
+    ['Desain Grafis', 'Desain 3D', 'UI Design', 'Web Design', 'Motion', 'Trading'].forEach(x => {
+      const li = document.createElement('li'); li.textContent = x; ul2.appendChild(li);
+    });
+    cols.appendChild(ul2);
+    clients.appendChild(cols);
+    right.appendChild(clients);
+
+    const contact = document.createElement('div'); contact.className = 'info-block';
+    contact.innerHTML = '<h3>Contact</h3>';
+    const cp = document.createElement('p');
+    cp.textContent = 'Untuk kerja sama, proyek desain, atau pertanyaan — hubungi lewat email atau WhatsApp.';
+    contact.appendChild(cp);
+    contact.appendChild(document.createElement('br'));
+    const cta = document.createElement('button');
+    cta.className = 'info-cta'; cta.textContent = 'Contact Us';
+    cta.addEventListener('click', () => { closeAll(); openPanel('contact'); });
+    contact.appendChild(cta);
+    right.appendChild(contact);
+
+    const foot = document.createElement('div'); foot.className = 'info-foot';
+    const fn = document.createElement('div'); fn.className = 'display'; fn.textContent = 'Adrian Fikri Fahrezi';
+    foot.appendChild(fn);
+    const fp = document.createElement('p'); fp.textContent = '© 2021 – 26, All Rights Reserved.';
+    foot.appendChild(fp);
+    right.appendChild(foot);
+    split.appendChild(right);
+    el.appendChild(split);
+  }
+  function renderContact(c) {
+    const el = document.querySelector('#contact .inner');
+    el.textContent = '';
+    const close = document.createElement('button');
+    close.className = 'contact-close'; close.textContent = 'Close';
+    close.addEventListener('click', closeAll);
+    el.appendChild(close);
+    const h = document.createElement('h2'); h.className = 'display'; h.textContent = 'Contact';
+    el.appendChild(h);
+    const rows = document.createElement('div'); rows.className = 'contact-rows';
+    (c.contacts || []).forEach(k => {
+      const url = safeUrl(k.url);
+      if (url) rows.appendChild(makeLink(k.label || '', url));
+      else {
+        const s = document.createElement('span'); s.textContent = k.label || ''; rows.appendChild(s);
+      }
+    });
+    el.appendChild(rows);
+  }
+
+  /* ---------- Render utama ---------- */
+  function render(c) {
+    const name = c.name || DEFAULT.name;
+    document.querySelector('.name').textContent = name;
+    document.title = name;
+    currentProjects = [...(c.projects || [])].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+    buildSlides();
+    renderArchive(currentProjects, true);
+    renderInfo(c);
+    renderContact(c);
+  }
+
+  /* ---------- Panel ---------- */
+  const panels = document.querySelectorAll('.panel');
+  const triggers = document.querySelectorAll('[data-open]');
+  function openPanel(id) {
+    document.getElementById(id).classList.add('open');
+    triggers.forEach(t => t.setAttribute('aria-expanded', String(t.dataset.open === id)));
+  }
+  function closeAll() {
+    panels.forEach(p => p.classList.remove('open'));
+    triggers.forEach(t => t.setAttribute('aria-expanded', 'false'));
+  }
+  triggers.forEach(t => t.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const target = document.getElementById(t.dataset.open);
+    const wasOpen = target.classList.contains('open');
+    closeAll();
+    if (!wasOpen) openPanel(t.dataset.open);
+  }));
+  document.querySelector('[data-close]').addEventListener('click', e => { e.preventDefault(); closeAll(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAll(); });
+  document.getElementById('hero').addEventListener('click', () => showSlide(slideIndex + 1));
 
   fetch('content.json', { cache: 'no-store' })
     .then(r => { if (!r.ok) throw 0; return r.json(); })
     .catch(() => DEFAULT)
     .then(render);
 
-  /* ---------- Panel ---------- */
-  const panels = document.querySelectorAll('.panel');
-  const triggers = document.querySelectorAll('[data-open]');
-  function closeAll() {
-    panels.forEach(p => p.classList.remove('open'));
-    triggers.forEach(t => t.setAttribute('aria-expanded', 'false'));
-  }
-  triggers.forEach(t => t.addEventListener('click', () => {
-    const target = document.getElementById(t.dataset.open);
-    const wasOpen = target.classList.contains('open');
-    closeAll();
-    if (!wasOpen) { target.classList.add('open'); t.setAttribute('aria-expanded', 'true'); }
-  }));
-  document.querySelector('[data-close]').addEventListener('click', e => { e.preventDefault(); closeAll(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAll(); });
+  window.addEventListener('load', () => {
+    setTimeout(() => document.getElementById('loader').classList.add('done'), 600);
+  });
+  setTimeout(() => document.getElementById('loader').classList.add('done'), 2500);
 </script>
 </body>
 </html>
