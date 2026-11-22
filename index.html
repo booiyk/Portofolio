@@ -197,9 +197,22 @@
     top.appendChild(back); top.appendChild(arch); el.appendChild(top);
     const h = document.createElement('h1'); h.className = 'detail-title';
     h.innerHTML = '';
-    const f1 = document.createElement('div'); f1.textContent = p['for'] || '';
-    const t1 = document.createElement('div'); t1.textContent = p.title || '';
-    h.appendChild(f1); h.appendChild(t1); el.appendChild(h);
+    /* Jangan double: kalau judul sudah diawali nama For (mis. judul
+       "Google Card Review — Landing Page" dengan For "Google Card Review"),
+       tampilkan judulnya saja. Baris For hanya ditampilkan kalau judul
+       tidak diawali For / kata pertama For (mis. For "Studio Xryihs"
+       dengan judul "Opening OldItsGold"). Berlaku untuk semua project. */
+    const forText = String(p['for'] || '').trim();
+    const titleText = String(p.title || '').trim();
+    const firstWord = forText.split(/\s+/)[0] || '';
+    const startsWithFor = forText !== '' && titleText.toLowerCase().startsWith(forText.toLowerCase());
+    const startsWithFirstWord = firstWord !== '' && titleText.toLowerCase().startsWith(firstWord.toLowerCase());
+    if (forText !== '' && !startsWithFor && !startsWithFirstWord) {
+      const f1 = document.createElement('div'); f1.textContent = forText;
+      h.appendChild(f1);
+    }
+    const t1 = document.createElement('div'); t1.textContent = titleText;
+    h.appendChild(t1); el.appendChild(h);
     const meta = document.createElement('div'); meta.className = 'detail-meta';
     const about = document.createElement('div');
     about.innerHTML = '<h3>About</h3>';
