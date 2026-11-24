@@ -144,6 +144,9 @@
   .detail-media .open-link a:hover { color:#fff; }
   .detail-archive { margin-top:64px; }
   .detail-archive h2 { font-size:15px; font-weight:500; padding:0 32px 8px; }
+  .archive-section { margin-top:56px; }
+  .archive-section:first-child { margin-top:0; }
+  .archive-section h2 { font-size:15px; font-weight:500; padding:0 32px 8px; }
 
   /* ---------- Info panel (merah, ala SO) ---------- */
   #info.panel { background:var(--so-red); color:#fff; padding:0; }
@@ -354,32 +357,56 @@
     const thYr = document.createElement('th');
     const yrBtn = document.createElement('button');
     yrBtn.textContent = '↓ Yr.';
+    let desc = true;
+    const tbody = document.createElement('tbody');
+    const drawRows = (rows) => {
+      tbody.textContent = '';
+      rows.forEach(p => {
+        const tr = document.createElement('tr');
+        const yr = document.createElement('td'); yr.className = 'yr'; yr.textContent = yearOf(p); tr.appendChild(yr);
+        const f = document.createElement('td'); f.textContent = p['for'] || ''; tr.appendChild(f);
+        const proj = document.createElement('td');
+        const b = document.createElement('button');
+        b.className = 'detail-link'; b.textContent = p.title || '';
+        b.addEventListener('click', () => showDetail(p));
+        proj.appendChild(b); tr.appendChild(proj);
+        const k = document.createElement('td'); k.textContent = p.kind || ''; tr.appendChild(k);
+        tbody.appendChild(tr);
+      });
+    };
     yrBtn.addEventListener('click', () => {
-      const desc = yrBtn.textContent.startsWith('↓');
-      yrBtn.textContent = desc ? '↑ Yr.' : '↓ Yr.';
-      renderArchive(list, !desc);
+      desc = !desc;
+      yrBtn.textContent = desc ? '↓ Yr.' : '↑ Yr.';
+      const rows = [...list].sort((a, b) => desc
+        ? String(b.date).localeCompare(String(a.date))
+        : String(a.date).localeCompare(String(b.date)));
+      drawRows(rows);
     });
     thYr.appendChild(yrBtn); trh.appendChild(thYr);
     ['For', 'Project', 'Kind'].forEach(h => {
       const th = document.createElement('th'); th.textContent = h; trh.appendChild(th);
     });
     thead.appendChild(trh); table.appendChild(thead);
-    const tbody = document.createElement('tbody');
-    list.forEach(p => {
-      const tr = document.createElement('tr');
-      const yr = document.createElement('td'); yr.className = 'yr'; yr.textContent = yearOf(p); tr.appendChild(yr);
-      const f = document.createElement('td'); f.textContent = p['for'] || ''; tr.appendChild(f);
-      const proj = document.createElement('td');
-      const b = document.createElement('button');
-      b.className = 'detail-link'; b.textContent = p.title || '';
-      b.addEventListener('click', () => showDetail(p));
-      proj.appendChild(b); tr.appendChild(proj);
-      const k = document.createElement('td'); k.textContent = p.kind || ''; tr.appendChild(k);
-      tbody.appendChild(tr);
-    });
+    drawRows(list);
     table.appendChild(tbody);
     wrap.appendChild(table);
     return wrap;
+  }
+  /* Sertifikat dipisah dari karya utama: archive punya 2 seksi. */
+  function isCert(p) { return /certificate/i.test(p.kind || ''); }
+  function archiveSections(works, certs) {
+    const host = document.createElement('div');
+    const w = document.createElement('div'); w.className = 'archive-section';
+    const wh = document.createElement('h2'); wh.textContent = 'Selected Work'; w.appendChild(wh);
+    w.appendChild(archiveTable(works));
+    host.appendChild(w);
+    if (certs.length) {
+      const c = document.createElement('div'); c.className = 'archive-section';
+      const ch = document.createElement('h2'); ch.textContent = 'Certificates (' + certs.length + ')'; c.appendChild(ch);
+      c.appendChild(archiveTable(certs));
+      host.appendChild(c);
+    }
+    return host;
   }
   function renderArchive(list, desc) {
     const sorted = [...list].sort((a, b) => desc
@@ -389,23 +416,28 @@
     pl.textContent = '';
     const intro = document.createElement('div');
     intro.className = 'archive-intro';
-    const clients = [...new Set(currentProjects.map(p => (p['for'] || '').trim()).filter(Boolean))];
+    const worksAll = currentProjects.filter(p => !isCert(p));
+    const clients = [...new Set(worksAll.map(p => (p['for'] || '').trim()).filter(Boolean))];
     clients.forEach((c, i) => {
       const b = document.createElement('button');
       b.textContent = c;
-      b.addEventListener('click', () => renderArchive(currentProjects.filter(p => (p['for'] || '').trim() === c), true));
+      b.addEventListener('click', () => renderArchive(worksAll.filter(p => (p['for'] || '').trim() === c), true));
       intro.appendChild(b);
       if (i < clients.length - 1) intro.appendChild(document.createTextNode(', '));
     });
-    if (list.length !== currentProjects.length) {
+    if (list.length !== worksAll.length) {
       intro.appendChild(document.createTextNode(' '));
       const all = document.createElement('button');
       all.className = 'all'; all.textContent = '(All)';
-      all.addEventListener('click', () => renderArchive(currentProjects, true));
+      all.addEventListener('click', () => renderArchive(worksAll, true));
       intro.appendChild(all);
     }
     pl.appendChild(intro);
-    pl.appendChild(archiveTable(sorted));
+    const works = sorted.filter(p => !isCert(p));
+    const certs = [...currentProjects].filter(isCert).sort((a, b) => desc
+      ? String(b.date).localeCompare(String(a.date))
+      : String(a.date).localeCompare(String(b.date)));
+    pl.appendChild(archiveSections(works, certs));
     const foot = document.createElement('div');
     foot.className = 'archive-foot';
     const left = document.createElement('div');
@@ -485,7 +517,7 @@
     const da = document.createElement('div'); da.className = 'detail-archive';
     const dh = document.createElement('h2'); dh.textContent = 'Project Archive'; da.appendChild(dh);
     const sorted = [...currentProjects].sort((a, b) => String(b.date).localeCompare(String(a.date)));
-    da.appendChild(archiveTable(sorted));
+    da.appendChild(archiveSections(sorted.filter(p => !isCert(p)), sorted.filter(isCert)));
     el.appendChild(da);
 
     closeAll();
@@ -534,13 +566,13 @@
     clients.innerHTML = '<h3>Selected Clients & Work</h3>';
     const cols = document.createElement('div'); cols.className = 'info-cols';
     const ul = document.createElement('ul');
-    [...new Set(currentProjects.map(p => (p['for'] || '').trim()).filter(Boolean))].forEach(name => {
+    [...new Set(currentProjects.filter(p => !isCert(p)).map(p => (p['for'] || '').trim()).filter(Boolean))].forEach(name => {
       const li = document.createElement('li');
       const b = document.createElement('button');
       b.textContent = name;
       b.addEventListener('click', () => {
         closeAll();
-        renderArchive(currentProjects.filter(p => (p['for'] || '').trim() === name), true);
+        renderArchive(currentProjects.filter(p => !isCert(p) && (p['for'] || '').trim() === name), true);
         openPanel('project');
       });
       li.appendChild(b); ul.appendChild(li);
